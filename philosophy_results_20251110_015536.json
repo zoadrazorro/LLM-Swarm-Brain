@@ -1,0 +1,162 @@
+{
+  "test_type": "philosophy",
+  "timestamp": "2025-11-10T01:55:34.576940",
+  "config": {
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "total_neurons": 8,
+    "max_questions_per_level": 1,
+    "levels_tested": "1-8"
+  },
+  "levels": {
+    "1": {
+      "name": "Basic Comprehension",
+      "description": "Ancient & Foundational Concepts",
+      "questions": [
+        {
+          "question": "What is Socrates' definition of knowledge in Plato's Theaetetus?",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "2": {
+      "name": "Simple Reasoning",
+      "description": "Basic Philosophical Arguments",
+      "questions": [
+        {
+          "question": "If pleasure is good, and virtue produces pleasure, does that make virtue good? (Epicurean reasoning)",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "3": {
+      "name": "Pattern Recognition",
+      "description": "Philosophical Patterns & Structures",
+      "questions": [
+        {
+          "question": "What pattern connects Plato's Forms, Kant's noumena, and thing-in-itself concepts?",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "4": {
+      "name": "Abstract Reasoning",
+      "description": "Complex Conceptual Analysis",
+      "questions": [
+        {
+          "question": "What is the relationship between essence and existence in existentialist thought?",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "5": {
+      "name": "Counterfactual Thinking",
+      "description": "Philosophical Thought Experiments",
+      "questions": [
+        {
+          "question": "If personal identity depends on memory (Locke), what happens if you have false memories?",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "6": {
+      "name": "Meta-Cognitive Reasoning",
+      "description": "Philosophy of Philosophy",
+      "questions": [
+        {
+          "question": "Can philosophy make progress, or does it merely reformulate eternal questions?",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "7": {
+      "name": "Philosophical & Existential",
+      "description": "Deep Metaphysical & Existential Questions",
+      "questions": [
+        {
+          "question": "Why is there something rather than nothing? (Leibnizian cosmological question)",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    },
+    "8": {
+      "name": "Multi-Step Problem Solving",
+      "description": "Complex Philosophical Puzzles",
+      "questions": [
+        {
+          "question": "Gettier Problem Chain: If justified true belief isn't sufficient for knowledge (Gettier cases), and we add a 'no false lemmas' condition, does that solve it? What if the justification is itself only accidentally true? How many conditions are needed?",
+          "error": "'final_output'",
+          "success": false
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 0,
+        "failed": 1,
+        "avg_duration": 0,
+        "avg_neurons_fired": 0
+      }
+    }
+  },
+  "summary": {
+    "total_questions": 8,
+    "total_duration_seconds": 0.0,
+    "avg_duration_per_question": 0.0,
+    "levels_completed": 8
+  }
+}

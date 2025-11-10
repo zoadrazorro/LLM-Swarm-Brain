@@ -192,16 +192,34 @@ def run_philosophy_test(
                 end_time = datetime.now()
                 duration = (end_time - start_time).total_seconds()
                 
+                # Extract final output from global workspace or conscious summary
+                final_output = ""
+                if result.get("global_workspace") and result["global_workspace"].get("conscious_summary"):
+                    final_output = result["global_workspace"]["conscious_summary"]
+                elif result.get("global_workspace") and result["global_workspace"].get("broadcasts"):
+                    # Get top broadcast content
+                    broadcasts = result["global_workspace"]["broadcasts"]
+                    if broadcasts:
+                        final_output = broadcasts[0].get("content", "")
+                elif result.get("neural_processing") and result["neural_processing"].get("steps"):
+                    # Fallback: get last step output
+                    last_step = result["neural_processing"]["steps"][-1]
+                    outputs = list(last_step.get("outputs", {}).values())
+                    final_output = outputs[0] if outputs else "No output generated"
+                else:
+                    final_output = "No output generated"
+                
                 logger.info(f"✓ Response generated in {duration:.2f}s")
-                logger.info(f"Answer: {result['final_output'][:200]}...")
+                logger.info(f"Answer: {final_output[:200]}...")
                 
                 question_result = {
                     "question": question,
-                    "answer": result["final_output"],
+                    "answer": final_output,
                     "duration_seconds": duration,
-                    "neurons_fired": result.get("neurons_fired", 0),
-                    "propagation_steps": result.get("propagation_steps", 0),
-                    "global_workspace_broadcasts": len(result.get("global_workspace_history", [])),
+                    "neurons_fired": result.get("neural_processing", {}).get("network_metrics", {}).get("neurons_fired", 0),
+                    "propagation_steps": len(result.get("neural_processing", {}).get("steps", [])),
+                    "global_workspace_broadcasts": len(result.get("global_workspace", {}).get("broadcasts", [])),
+                    "consciousness_level": result.get("consciousness_level", 0.0),
                     "success": True
                 }
                 
