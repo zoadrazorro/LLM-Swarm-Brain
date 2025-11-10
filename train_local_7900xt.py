@@ -71,10 +71,18 @@ class LocalTrainer:
             api_provider="hyperbolic"  # Uses OpenAI-compatible API
         )
         
-        # Override API URL for LM Studio
-        for neuron in self.brain.orchestrator.neurons.values():
+        # Override API URLs for dual-GPU LM Studio setup
+        # GPU 0 neurons (0-1) -> port 1234
+        # GPU 1 neurons (2-3) -> port 1235
+        neuron_list = list(self.brain.orchestrator.neurons.items())
+        for idx, (neuron_id, neuron) in enumerate(neuron_list):
             if hasattr(neuron, 'api_url'):
-                neuron.api_url = "http://localhost:1234/v1/chat/completions"
+                if idx < 2:
+                    # First 2 neurons -> GPU 0 (port 1234)
+                    neuron.api_url = "http://localhost:1234/v1/chat/completions"
+                else:
+                    # Last 2 neurons -> GPU 1 (port 1235)
+                    neuron.api_url = "http://localhost:1235/v1/chat/completions"
         
         # Load persistent memory
         self.memory = self._load_memory()
