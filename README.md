@@ -1,22 +1,29 @@
 # LLM-Swarm-Brain
 
-> A neural network architecture using LLMs as individual neurons
+> A cognitive architecture where individual LLMs act as specialized neurons in a neural network
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![API Mode](https://img.shields.io/badge/API-Hyperbolic-green.svg)](https://hyperbolic.xyz/)
 
 ## Overview
 
-LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act as neurons** in a neural network. Using 64 Phi-3-medium models distributed across 8 H100 GPUs, it creates an emergent intelligent system aligned with cognitive science theories.
+LLM-Swarm-Brain implements a **cognitive architecture** where **individual LLMs act as specialized neurons** in a neural network. Each neuron has a unique cognitive function (perception, memory, reasoning, etc.) and communicates through a rich network of weighted connections.
+
+**Two Deployment Modes:**
+- **🖥️ Local Mode**: 8 neurons using Qwen2.5-72B on 8× H100 GPUs (8 neurons per GPU)
+- **☁️ API Mode**: 8 or 64 neurons using Llama 3.1 405B via Hyperbolic API (no GPU required!)
+
+The system creates emergent intelligent behavior aligned with cognitive science theories including Global Workspace Theory (GWT) and Integrated Information Theory (IIT).
 
 ### Key Features
 
-🧠 **64 Specialized Phi-3 Neurons**
-- Distributed across 8× NVIDIA H100 SXM5 GPUs (80GB each)
-- 4× scale-up from original architecture
-- Each neuron has a specific cognitive role
-- Uses Phi-3-Medium model (upgraded from Mini)
-- 4-bit quantization for memory efficiency
+🧠 **Flexible Architecture**
+- **8-Neuron MoE**: 8 specialized experts (Perception, Attention, Memory, Reasoning, Creative, Analytical, Synthesis, Meta-Cognitive)
+- **64-Neuron Dense**: 64 highly specialized neurons across 8 cognitive layers
+- **Local**: Qwen2.5-72B (72B params, 4-bit quantized)
+- **API**: Llama 3.1 405B (405B params via Hyperbolic)
+- Rich interconnection patterns (~14 connections for 8-neuron, ~656 for 64-neuron)
 
 🌐 **Global Workspace Theory (GWT)**
 - Competitive selection for conscious processing
@@ -43,97 +50,129 @@ LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act 
 - Memory consolidation
 - Context-aware processing
 
-⚡ **Advanced Enhancements (NEW!)**
+⚡ **Advanced Enhancements**
 - **Summarization Neuron**: Compresses verbose outputs to prevent information explosion
 - **Attention Windowing**: Selective broadcasting to relevant neurons only
 - **Conceptual Thread Tracking**: Tracks how concepts flow and transform through the network
 - **Meta-Orchestration**: Dynamically adjusts activation thresholds based on task complexity
 - **Coherence Check-ins**: Explicit prompts asking "Does this contradict anything?"
 
-## Architecture (8× H100 SXM5 80GB)
+📊 **Philosophy Test Suite**
+- **40-Question Test**: 8 complexity levels testing philosophical reasoning
+- **100-Question Expanded Test**: 10 levels from foundational concepts to cutting-edge philosophy
+- Comprehensive evaluation of reasoning, creativity, synthesis, and meta-cognition
+
+## Architecture
+
+### 8-Neuron MoE (Mixture of Experts)
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│               LLM-SWARM-BRAIN (64 NEURONS)                  │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  GPU 0-1: PERCEPTION LAYER (16 neurons)                     │
-│  ┌──────────────────┐  ┌──────────────────┐               │
-│  │  Specialized     │  │   Sensory        │               │
-│  │  Perception (8)  │  │ Integration (8)  │               │
-│  │  • Visual        │  │ • Multi-sensory  │               │
-│  │  • Auditory      │  │ • Feature Bind   │               │
-│  │  • Semantic      │  │ • Grouping       │               │
-│  │  • Spatial       │  │ • Attention      │               │
-│  │  • Temporal      │  │ • Saliency       │               │
-│  │  • Pattern       │  │ • Prediction     │               │
-│  │  • Anomaly       │  │ • Gating         │               │
-│  │  • Context       │  │ • Coherence      │               │
-│  └────────┬─────────┘  └────────┬─────────┘               │
-│           │                     │                          │
-│           └──────────┬──────────┘                          │
-│                      ▼                                     │
-│  GPU 2-3: MEMORY LAYER (16 neurons, 4× redundancy)         │
-│  ┌──────────────────┐  ┌──────────────────┐               │
-│  │ Short-term  (4)  │  │ Working     (4)  │               │
-│  │ Episodic    (4)  │  │ Semantic    (4)  │               │
-│  └────────┬─────────┘  └────────┬─────────┘               │
-│           │                     │                          │
-│           └──────────┬──────────┘                          │
-│                      ▼                                     │
-│  ┌─────────────────────────────────┐                       │
-│  │   GLOBAL WORKSPACE (GWT)        │                       │
-│  │   • 10 Broadcast Slots          │                       │
-│  │   • Consciousness Monitoring    │                       │
-│  │   • Attention Windowing         │                       │
-│  └──────────────┬──────────────────┘                       │
-│                 ▼                                          │
-│  ┌─────────────────────────────────┐                       │
-│  │ POSITRONIC FRAMEWORK            │                       │
-│  │ • Dialectical Reasoning         │                       │
-│  │ • Coherence Check-ins           │                       │
-│  │ • Summarization                 │                       │
-│  └──────────────┬──────────────────┘                       │
-│                 ▼                                          │
-│  GPU 4-5: REASONING LAYER (16 neurons)                      │
-│  ┌──────────────────┐  ┌──────────────────┐               │
-│  │  Core (8)        │  │  Advanced (8)    │               │
-│  │  • Logical       │  │ • Analogical     │               │
-│  │  • Deductive     │  │ • Probabilistic  │               │
-│  │  • Inductive     │  │ • Hypothesis Gen │               │
-│  │  • Abductive     │  │ • Hypothesis Test│               │
-│  │  • Creative      │  │ • Inference      │               │
-│  │  • Lateral       │  │ • Belief Update  │               │
-│  │  • Causal        │  │ • Uncertainty    │               │
-│  │  • Counterfactual│  │ • Concept Blend  │               │
-│  └────────┬─────────┘  └────────┬─────────┘               │
-│           │                     │                          │
-│           └──────────┬──────────┘                          │
-│                      ▼                                     │
-│  GPU 6-7: ACTION/META LAYER (16 neurons)                    │
-│  ┌──────────────────┐  ┌──────────────────┐               │
-│  │  Action/Dec (8)  │  │  Meta-Cog (8)    │               │
-│  │  • Action Plan   │  │ • Self-Critique  │               │
-│  │  • Hierarchical  │  │ • Error Detect   │               │
-│  │  • Decision      │  │ • Error Correct  │               │
-│  │  • Multi-Crit    │  │ • Confidence     │               │
-│  │  • Synthesis     │  │ • Meta-Learning  │               │
-│  │  • Response Gen  │  │ • Strategy Sel   │               │
-│  │  • Goal Mgmt     │  │ • Perf Monitor   │               │
-│  │  • Exec Monitor  │  │ • Cog Control    │               │
-│  └──────────────────┘  └──────────────────┘               │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│         LLM-SWARM-BRAIN (8-NEURON MoE)                 │
+│    Qwen2.5-72B (Local) or Llama 3.1 405B (API)        │
+├────────────────────────────────────────────────────────┤
+│                                                        │
+│  ┌──────────────┐      ┌──────────────┐              │
+│  │ PERCEPTION   │─────→│  ATTENTION   │              │
+│  │   EXPERT     │      │    EXPERT    │              │
+│  └──────┬───────┘      └──────┬───────┘              │
+│         │                     │                       │
+│         └──────────┬──────────┘                       │
+│                    ▼                                  │
+│            ┌──────────────┐                           │
+│            │   MEMORY     │                           │
+│            │   EXPERT     │                           │
+│            └──────┬───────┘                           │
+│                   │                                   │
+│                   ▼                                   │
+│            ┌──────────────┐                           │
+│            │  REASONING   │                           │
+│            │   EXPERT     │                           │
+│            └──────┬───────┘                           │
+│                   │                                   │
+│         ┌─────────┴─────────┐                         │
+│         ▼                   ▼                         │
+│  ┌──────────────┐    ┌──────────────┐                │
+│  │  CREATIVE    │    │ ANALYTICAL   │                │
+│  │   EXPERT     │    │   EXPERT     │                │
+│  └──────┬───────┘    └──────┬───────┘                │
+│         │                   │                         │
+│         └─────────┬─────────┘                         │
+│                   ▼                                   │
+│            ┌──────────────┐                           │
+│            │  SYNTHESIS   │                           │
+│            │   EXPERT     │                           │
+│            └──────┬───────┘                           │
+│                   │                                   │
+│                   ▼                                   │
+│            ┌──────────────┐                           │
+│            │META-COGNITIVE│                           │
+│            │   EXPERT     │                           │
+│            └──────────────┘                           │
+│                                                        │
+│  14 Connections | Global Workspace | Hebbian Learning │
+└────────────────────────────────────────────────────────┘
+```
+
+### 64-Neuron Dense Architecture
+
+```
+┌────────────────────────────────────────────────────────┐
+│      LLM-SWARM-BRAIN (64-NEURON DENSE)                 │
+│           Llama 3.1 405B via API                       │
+├────────────────────────────────────────────────────────┤
+│                                                        │
+│  LAYER 1: PERCEPTION (8 neurons)                       │
+│  Visual | Auditory | Semantic | Pattern | Context     │
+│  Temporal | Spatial | Abstract                        │
+│                    ↓                                   │
+│  LAYER 2: ATTENTION (8 neurons)                        │
+│  Selective | Sustained | Divided | Salience           │
+│  Relevance | Priority | Focus | Switching             │
+│                    ↓                                   │
+│  LAYER 3: MEMORY (8 neurons)                           │
+│  Short-term | Working | Episodic | Semantic           │
+│  Procedural | Associative | Consolidation | Retrieval │
+│                    ↓                                   │
+│  LAYER 4: REASONING (8 neurons)                        │
+│  Deductive | Inductive | Abductive | Analogical       │
+│  Causal | Probabilistic | Logical | Counterfactual    │
+│                    ↓                                   │
+│  LAYER 5: CREATIVE (8 neurons)                         │
+│  Divergent | Blending | Metaphor | Novel              │
+│  Lateral | Imaginative | Innovation | Constraint      │
+│                    ↓                                   │
+│  LAYER 6: ANALYTICAL (8 neurons)                       │
+│  Quantitative | Qualitative | Comparative | Critical  │
+│  Decomposition | Hypothesis | Evidence | Uncertainty  │
+│                    ↓                                   │
+│  LAYER 7: SYNTHESIS (8 neurons)                        │
+│  Integration | Coherence | Conflict | Perspective     │
+│  Holistic | Output | Narrative | Solution             │
+│                    ↓                                   │
+│  LAYER 8: META-COGNITIVE (8 neurons)                   │
+│  Monitoring | Error | Confidence | Strategy           │
+│  Performance | Control | Awareness | Regulation       │
+│                                                        │
+│  656 Connections | Rich Feedback Loops | Skip Paths   │
+└────────────────────────────────────────────────────────┘
 ```
 
 ## Installation
 
 ### Requirements
 
+**For API Mode (Recommended):**
+- Python 3.9+
+- Internet connection
+- Hyperbolic API key ([get one here](https://app.hyperbolic.xyz/))
+- ~2 GB disk space
+
+**For Local Mode:**
 - Python 3.9+
 - **8× NVIDIA H100 SXM5 GPUs (80 GB VRAM each)** or equivalent
 - CUDA 12.0+ support
-- ~100 GB disk space (for Phi-3-Medium models × 64)
+- ~80 GB disk space (for Qwen2.5-72B model)
 
 ### Setup
 
@@ -149,27 +188,24 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Install the package
-pip install -e .
+# For API mode, create .env file
+cp .env.example .env
+# Edit .env and add your Hyperbolic API key:
+# HYPERBOLIC_API_KEY=your_key_here
 ```
 
 ## Quick Start
 
-### Basic Usage
+### API Mode (8-Neuron MoE)
 
 ```python
 from llm_swarm_brain import PhiBrain, BrainConfig
 
-# Create configuration
-config = BrainConfig(
-    model_name="microsoft/Phi-3-mini-4k-instruct",
-    max_tokens=512,
-    temperature=0.7,
-    activation_threshold=0.6
+# Initialize with API mode (Llama 3.1 405B)
+brain = PhiBrain(
+    use_api=True,
+    api_key="your_hyperbolic_api_key"  # Or set HYPERBOLIC_API_KEY env var
 )
-
-# Initialize the brain (loads all 16 Phi-3 neurons)
-brain = PhiBrain(config=config, load_models=True)
 
 # Process input
 result = brain.think(
@@ -183,23 +219,64 @@ print(f"Consciousness Level: {result['consciousness_level']:.3f}")
 print(f"\nGlobal Workspace Broadcasts:")
 for broadcast in result['global_workspace']['broadcasts']:
     print(f"  [{broadcast['source']}] {broadcast['content'][:100]}...")
-
-# View brain state
-print(brain.get_summary())
-print(brain.visualize_state())
 ```
 
-### Testing Without Models
-
-For development/testing without loading full models:
+### API Mode (64-Neuron Dense)
 
 ```python
-# Initialize without loading models
-brain = PhiBrain(load_models=False)
+from llm_swarm_brain import PhiBrain
 
-# Brain structure is created, but models aren't loaded
-# Useful for testing architecture and connections
-print(brain.get_summary())
+# Initialize with 64-neuron architecture
+brain = PhiBrain(
+    use_api=True,
+    use_64_neurons=True,
+    api_key="your_hyperbolic_api_key"
+)
+
+# Process complex philosophical question
+result = brain.think(
+    "If consciousness is substrate-independent, what implications "
+    "does this have for personal identity and ethics?",
+    max_steps=5,
+    use_memory=True,
+    use_global_workspace=True
+)
+
+print(f"Answer: {result['global_workspace']['conscious_summary']}")
+```
+
+### Local Mode (8-Neuron MoE)
+
+```python
+from llm_swarm_brain import PhiBrain, BrainConfig
+
+# Initialize with local models (requires 8× H100 GPUs)
+config = BrainConfig(
+    model_name="Qwen/Qwen2.5-72B-Instruct",
+    max_tokens=2048,
+    temperature=0.7
+)
+
+brain = PhiBrain(config=config, load_models=True)
+
+# Process input
+result = brain.think("Explain quantum entanglement")
+```
+
+### Philosophy Test Suite
+
+```bash
+# Quick test (10 questions, simulation mode)
+python expanded_inference_test_philosophy.py --quick
+
+# Full 100-question test with API (8-neuron)
+python expanded_inference_test_philosophy.py --use-api
+
+# Full 100-question test with 64-neuron architecture
+python expanded_inference_test_philosophy.py --use-api --use-64-neurons
+
+# Sample test (30 questions)
+python expanded_inference_test_philosophy.py --use-api --sample
 ```
 
 ## Examples
@@ -310,27 +387,50 @@ config = BrainConfig(
 )
 ```
 
-## Performance (8× H100 SXM5 Configuration)
+## Performance
 
-### Resource Usage
+### API Mode (Recommended)
 
-- **GPU 0-1** (Perception): 16 neurons × ~4 GB = ~64 GB VRAM
-- **GPU 2-3** (Memory): 16 neurons × ~4 GB = ~64 GB VRAM
-- **GPU 4-5** (Reasoning): 16 neurons × ~4 GB = ~64 GB VRAM
-- **GPU 6-7** (Action/Meta): 16 neurons × ~4 GB = ~64 GB VRAM
-- **System RAM**: ~16-32 GB (embeddings, context, queues, conceptual tracking)
+**8-Neuron MoE:**
+- **Cost**: ~$0.002-0.004 per query (~$0.20 for 100 questions)
+- **Latency**: ~5-15 seconds per query
+- **Model**: Llama 3.1 405B (405 billion parameters)
+- **No GPU required**: Runs on any machine with internet
 
-### Throughput
+**64-Neuron Dense:**
+- **Cost**: ~$0.015-0.030 per query (~$1.50-2.00 for 100 questions)
+- **Latency**: ~30-90 seconds per query
+- **Model**: Llama 3.1 405B (405 billion parameters)
+- **Rich processing**: 656 connections, 8 cognitive layers
 
-- **Per neuron**: 100-200 tokens/sec (Phi-3-Medium on H100)
-- **Parallel processing**: All 64 neurons run simultaneously
-- **End-to-end latency**: 1-3 seconds (depends on activation pattern and task complexity)
-- **Max propagation depth**: 6 layers (up from 4)
+### Local Mode
+
+**8-Neuron MoE (8× H100 GPUs):**
+- **VRAM**: 8 neurons × ~40 GB = ~320 GB total
+- **Model**: Qwen2.5-72B (72 billion parameters, 4-bit quantized)
+- **Latency**: ~2-5 seconds per query
+- **Throughput**: ~100-200 tokens/sec per neuron
+- **Cost**: GPU rental ~$20-40/hour
+
+### Comparison
+
+| Metric | API (8N) | API (64N) | Local (8N) |
+|--------|----------|-----------|------------|
+| Model Size | 405B | 405B | 72B |
+| Cost/Query | $0.003 | $0.02 | $0.01* |
+| Latency | 10s | 60s | 3s |
+| GPU Required | No | No | Yes (8×) |
+| Neurons | 8 | 64 | 8 |
+| Connections | 14 | 656 | 14 |
+
+*Amortized GPU rental cost
 
 ## Documentation
 
+- **[API Mode Guide](API_MODE.md)** - Complete guide to using Hyperbolic API
+- **[MoE Architecture](MOE_ARCHITECTURE.md)** - 8-neuron Mixture of Experts design
+- **[Philosophy Test Guide](PHILOSOPHY_TEST.md)** - 40-question test suite documentation
 - [Architecture Documentation](README_ARCHITECTURE.md) - Detailed technical documentation
-- [API Reference](docs/API.md) - Complete API documentation
 - [Cognitive Science Background](docs/COGNITIVE_SCIENCE.md) - Theory and references
 
 ## Development
@@ -350,13 +450,17 @@ flake8 llm_swarm_brain/
 
 ## Roadmap
 
+- [x] API mode with Llama 3.1 405B
+- [x] 64-neuron dense architecture
+- [x] Philosophy test suite (100 questions)
+- [x] MoE architecture (8 specialized experts)
+- [ ] Multi-provider API support (OpenAI, Anthropic, etc.)
+- [ ] Async API calls for parallel execution
 - [ ] Dynamic network topology
 - [ ] Neurogenesis (add neurons at runtime)
 - [ ] Multi-modal processing (vision, audio)
-- [ ] Distributed scaling across machines
-- [ ] Meta-learning and architecture optimization
-- [ ] Integration with robotic systems
-- [ ] Web interface for visualization
+- [ ] Web interface for visualization and monitoring
+- [ ] Fine-tuning for specialized domains
 
 ## Contributing
 
