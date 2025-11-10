@@ -265,6 +265,8 @@ def main():
     parser = argparse.ArgumentParser(description="Philosophy Inference Test for LLM-Swarm-Brain")
     parser.add_argument("--quick", action="store_true", help="Quick test mode (1 question per level, no models)")
     parser.add_argument("--load-models", action="store_true", help="Load actual models (default: simulation)")
+    parser.add_argument("--use-api", action="store_true", help="Use Hyperbolic API (Llama 3.1 405B) instead of local models")
+    parser.add_argument("--api-key", type=str, help="Hyperbolic API key (or set HYPERBOLIC_API_KEY env var)")
     parser.add_argument("--start-level", type=int, default=1, help="Starting level (1-8)")
     parser.add_argument("--end-level", type=int, default=8, help="Ending level (1-8)")
     parser.add_argument("--questions-per-level", type=int, default=5, help="Questions per level (max 5)")
@@ -272,7 +274,8 @@ def main():
     args = parser.parse_args()
     
     # Configure test parameters
-    load_models = args.load_models
+    use_api = args.use_api
+    load_models = args.load_models if not use_api else False
     max_per_level = 1 if args.quick else min(args.questions_per_level, 5)
     start_level = max(1, min(args.start_level, 8))
     end_level = max(start_level, min(args.end_level, 8))
@@ -282,12 +285,13 @@ def main():
         logger.info("  - 1 question per level")
         logger.info("  - Simulation mode (no model loading)")
         load_models = False
+        use_api = False
     
     logger.info(f"\n{'='*80}")
     logger.info("PHILOSOPHY INFERENCE TEST - LLM-SWARM-BRAIN")
     logger.info(f"{'='*80}")
     logger.info(f"Test Configuration:")
-    logger.info(f"  - Load Models: {load_models}")
+    logger.info(f"  - Mode: {'API (Llama 3.1 405B)' if use_api else 'Local Models' if load_models else 'Simulation'}")
     logger.info(f"  - Questions per Level: {max_per_level}")
     logger.info(f"  - Levels: {start_level}-{end_level}")
     logger.info(f"  - Total Questions: {(end_level - start_level + 1) * max_per_level}")
@@ -296,7 +300,14 @@ def main():
         # Initialize brain
         logger.info(f"\n[1] Initializing PhiBrain...")
         config = BrainConfig()
-        brain = PhiBrain(config=config, load_models=load_models)
+        if use_api:
+            config.model_name = "meta-llama/Meta-Llama-3.1-405B-Instruct"
+        brain = PhiBrain(
+            config=config,
+            load_models=load_models,
+            use_api=use_api,
+            api_key=args.api_key
+        )
         
         # Run test
         logger.info(f"\n[2] Running philosophy test...")

@@ -53,11 +53,12 @@ class NeuronRole(Enum):
 class BrainConfig:
     """Configuration for the neural brain architecture"""
 
-    # Model configuration - Large MoE model maximizing 78GB VRAM per H100
-    # Qwen2.5-72B-Instruct: 72B params, ~40GB in 4-bit, leaves ~38GB for KV cache
+    # Model configuration
+    # Local mode: Qwen2.5-72B-Instruct (72B params, ~40GB in 4-bit)
+    # API mode: meta-llama/Meta-Llama-3.1-405B-Instruct (via Hyperbolic)
     model_name: str = "Qwen/Qwen2.5-72B-Instruct"
-    quantization: str = "4bit"  # BitsAndBytes 4-bit quantization
-    max_tokens: int = 2048  # Increased for larger model
+    quantization: str = "4bit"  # BitsAndBytes 4-bit quantization (local only)
+    max_tokens: int = 2048  # Increased for larger models
     temperature: float = 0.7
 
     # GPU allocation (8× H100 SXM5 80GB) - MoE Architecture

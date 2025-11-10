@@ -15,6 +15,7 @@ import logging
 from datetime import datetime
 
 from llm_swarm_brain.neuron import Phi3Neuron
+from llm_swarm_brain.neuron_api import APINeuron
 from llm_swarm_brain.orchestrator import NeuralOrchestrator
 from llm_swarm_brain.gw_theory import GlobalWorkspace, ConsciousnessMonitor
 from llm_swarm_brain.positronic_framework import PositronicFramework
@@ -118,18 +119,24 @@ class PhiBrain:
         self,
         config: Optional[BrainConfig] = None,
         load_models: bool = True,
-        enable_positronic: bool = True
+        enable_positronic: bool = True,
+        use_api: bool = False,
+        api_key: Optional[str] = None
     ):
         """
         Initialize PhiBrain
 
         Args:
             config: Brain configuration (uses default if None)
-            load_models: Whether to load models immediately
+            load_models: Whether to load models immediately (ignored if use_api=True)
             enable_positronic: Enable positronic dialectical framework
+            use_api: Use API-based neurons instead of local models
+            api_key: API key for Hyperbolic (or set HYPERBOLIC_API_KEY env var)
         """
         self.config = config or BrainConfig()
-        self.load_models = load_models
+        self.use_api = use_api
+        self.api_key = api_key
+        self.load_models = load_models if not use_api else False
         self.enable_positronic = enable_positronic
 
         # Core components
@@ -197,10 +204,14 @@ class PhiBrain:
         logger.info("PhiBrain initialized successfully with all enhancements")
 
     def _initialize_neurons(self):
-        """Initialize all 64 neurons according to 8-GPU architecture"""
+        """Initialize all neurons according to architecture (API or local)"""
         neuron_count = 0
+        
+        # Choose neuron class based on mode
+        NeuronClass = APINeuron if self.use_api else Phi3Neuron
+        mode_str = "API-based" if self.use_api else "local GPU-based"
 
-        # Iterate through all 8 GPUs
+        # Iterate through all GPUs (or API endpoints)
         for gpu_id in range(self.config.gpu_count):
             gpu_key = f"gpu_{gpu_id}"
 
@@ -212,38 +223,51 @@ class PhiBrain:
 
             for layer_name, roles in layers.items():
                 for role in roles:
-                    neuron_id = f"gpu{gpu_id}_{layer_name}_{role.value}"
-                    neuron = Phi3Neuron(
-                        role=role,
-                        gpu_id=gpu_id,
-                        neuron_id=neuron_id,
-                        activation_threshold=self.config.activation_threshold,
-                        model_name=self.config.model_name,
-                        max_tokens=self.config.max_tokens,
-                        temperature=self.config.temperature,
-                        load_model=self.load_models
-                    )
+                    neuron_id = f"expert{gpu_id}_{layer_name}_{role.value}"
+                    
+                    if self.use_api:
+                        neuron = APINeuron(
+                            role=role,
+                            gpu_id=gpu_id,
+                            neuron_id=neuron_id,
+                            activation_threshold=self.config.activation_threshold,
+                            model_name=self.config.model_name,
+                            max_tokens=self.config.max_tokens,
+                            temperature=self.config.temperature,
+                            api_key=self.api_key
+                        )
+                    else:
+                        neuron = Phi3Neuron(
+                            role=role,
+                            gpu_id=gpu_id,
+                            neuron_id=neuron_id,
+                            activation_threshold=self.config.activation_threshold,
+                            model_name=self.config.model_name,
+                            max_tokens=self.config.max_tokens,
+                            temperature=self.config.temperature,
+                            load_model=self.load_models
+                        )
 
                     self.orchestrator.add_neuron(neuron)
 
                     # Categorize neurons by layer
-                    if "perception" in layer_name or "sensory" in layer_name:
+                    if "perception" in layer_name or "attention" in layer_name:
                         self.perception_neurons.append(neuron)
                     elif "memory" in layer_name:
                         self.memory_neurons.append(neuron)
-                    elif "reasoning" in layer_name:
+                    elif "reasoning" in layer_name or "creative" in layer_name or "analytical" in layer_name:
                         self.reasoning_neurons.append(neuron)
-                    elif "action" in layer_name or "meta" in layer_name:
+                    elif "synthesis" in layer_name or "meta" in layer_name:
                         self.action_neurons.append(neuron)
 
                     neuron_count += 1
 
         logger.info(
-            f"Initialized {neuron_count} neurons across {self.config.gpu_count} GPUs "
+            f"Initialized {neuron_count} {mode_str} neurons "
             f"(Perception: {len(self.perception_neurons)}, "
             f"Memory: {len(self.memory_neurons)}, "
             f"Reasoning: {len(self.reasoning_neurons)}, "
-            f"Action/Meta: {len(self.action_neurons)})"
+            f"Synthesis/Meta: {len(self.action_neurons)})"
         )
 
     def _setup_network(self):

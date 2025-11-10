@@ -1,0 +1,437 @@
+"""
+API-based Neuron: Individual LLM-based neuron using Hyperbolic API
+
+Implements neural behavior using remote API calls instead of local models.
+"""
+
+import requests
+import numpy as np
+from typing import List, Dict, Any, Optional
+from dataclasses import dataclass, field
+from datetime import datetime
+import logging
+import os
+from dotenv import load_dotenv
+
+from llm_swarm_brain.config import NeuronRole, ROLE_PROMPTS
+from llm_swarm_brain.utils import (
+    format_neuron_context,
+    CircularBuffer,
+    sigmoid,
+    hebbian_update
+)
+
+load_dotenv()
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class NeuronConnection:
+    """Represents a connection to another neuron"""
+    target_neuron: 'APINeuron'
+    weight: float
+    last_updated: datetime = field(default_factory=datetime.now)
+
+    def __hash__(self):
+        return hash(id(self.target_neuron))
+
+
+@dataclass
+class NeuronSignal:
+    """Signal passed between neurons"""
+    content: str
+    source_role: NeuronRole
+    activation_level: float
+    timestamp: datetime = field(default_factory=datetime.now)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+class APINeuron:
+    """
+    Individual neuron in the LLM swarm brain using Hyperbolic API
+    
+    Implements:
+    - Activation calculation based on input relevance
+    - Signal processing via Llama 3.1 405B API
+    - Propagation to connected neurons
+    - Hebbian learning for connection weights
+    """
+
+    def __init__(
+        self,
+        role: NeuronRole,
+        gpu_id: int,  # Kept for compatibility, not used
+        neuron_id: str,
+        activation_threshold: float = 0.6,
+        model_name: str = "meta-llama/Meta-Llama-3.1-405B-Instruct",
+        max_tokens: int = 2048,
+        temperature: float = 0.7,
+        api_key: Optional[str] = None,
+        api_url: str = "https://api.hyperbolic.xyz/v1/chat/completions"
+    ):
+        """
+        Initialize API-based neuron
+        
+        Args:
+            role: Neuron's functional role
+            gpu_id: Kept for compatibility (not used with API)
+            neuron_id: Unique identifier for this neuron
+            activation_threshold: Threshold for neuron activation
+            model_name: API model name
+            max_tokens: Max tokens to generate
+            temperature: Sampling temperature
+            api_key: Hyperbolic API key (or set HYPERBOLIC_API_KEY env var)
+            api_url: API endpoint URL
+        """
+        self.role = role
+        self.gpu_id = gpu_id
+        self.neuron_id = neuron_id
+        self.activation_threshold = activation_threshold
+        self.model_name = model_name
+        self.max_tokens = max_tokens
+        self.temperature = temperature
+        self.api_url = api_url
+        
+        # Get API key from parameter or environment
+        self.api_key = api_key or os.getenv("HYPERBOLIC_API_KEY")
+        if not self.api_key:
+            logger.warning(f"{neuron_id}: No API key provided. Will use simulation mode.")
+        
+        # Neural properties
+        self.connections: List[NeuronConnection] = []
+        self.activation_level: float = 0.0
+        self.is_firing: bool = False
+        
+        # Memory and history
+        self.signal_history = CircularBuffer(capacity=50)
+        self.activation_history = CircularBuffer(capacity=100)
+        self.output_history: List[str] = []
+        
+        # Statistics
+        self.total_firings: int = 0
+        self.total_signals_received: int = 0
+        self.total_signals_sent: int = 0
+        self.total_api_calls: int = 0
+        self.total_api_errors: int = 0
+        
+        logger.info(f"Initialized {neuron_id} (API-based, role={role.value})")
+
+    @property
+    def device(self) -> str:
+        """Return device string for compatibility"""
+        return "api"
+
+    def calculate_activation(
+        self,
+        input_signal: NeuronSignal,
+        global_context: Optional[Dict[str, Any]] = None
+    ) -> float:
+        """
+        Calculate activation level based on input signal
+        
+        Args:
+            input_signal: Input signal to process
+            global_context: Global workspace context
+            
+        Returns:
+            Activation level (0-1)
+        """
+        # Base activation from signal strength
+        base_activation = input_signal.activation_level
+        
+        # Modulate by role relevance (simplified)
+        role_boost = 0.1 if input_signal.source_role != self.role else 0.2
+        
+        # Global context boost
+        context_boost = 0.0
+        if global_context and "active_concepts" in global_context:
+            context_boost = 0.1
+        
+        # Calculate final activation
+        activation = sigmoid(base_activation + role_boost + context_boost)
+        
+        # Store in history
+        self.activation_level = activation
+        self.activation_history.append(activation)
+        
+        return self.activation_level
+
+    def should_fire(self) -> bool:
+        """
+        Determine if neuron should fire based on activation level
+        
+        Returns:
+            True if activation exceeds threshold
+        """
+        return self.activation_level >= self.activation_threshold
+
+    def fire(
+        self,
+        input_signal: NeuronSignal,
+        global_context: Optional[Dict[str, Any]] = None
+    ) -> Optional[str]:
+        """
+        Generate output using Hyperbolic API
+        
+        Args:
+            input_signal: Input signal to process
+            global_context: Global workspace context
+            
+        Returns:
+            Generated output string, or None if not firing
+        """
+        if not self.should_fire():
+            return None
+        
+        self.is_firing = True
+        self.total_firings += 1
+        
+        try:
+            # Format context for this neuron
+            prior_signals = [
+                sig.content for sig in self.signal_history.get_recent(3)
+            ]
+            
+            context = format_neuron_context(
+                role=ROLE_PROMPTS[self.role],
+                input_signal=input_signal.content,
+                prior_signals=prior_signals,
+                global_context=global_context
+            )
+            
+            # Generate response using API or simulation fallback
+            if self.api_key:
+                output = self._generate_api(context)
+            else:
+                output = self._simulate_output(input_signal, global_context)
+            
+            if output is None:
+                output = self._simulate_output(input_signal, global_context)
+            
+            # Store in history
+            self.output_history.append(output)
+            
+            logger.debug(f"{self.neuron_id} fired with activation {self.activation_level:.3f}")
+            
+            return output
+            
+        except Exception as e:
+            logger.error(f"Error during firing: {e}")
+            self.total_api_errors += 1
+            return self._simulate_output(input_signal, global_context)
+            
+        finally:
+            self.is_firing = False
+
+    def _generate_api(self, prompt: str) -> Optional[str]:
+        """
+        Generate text using Hyperbolic API
+        
+        Args:
+            prompt: Input prompt
+            
+        Returns:
+            Generated text or None on error
+        """
+        try:
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}"
+            }
+            
+            # Format messages for API
+            messages = [
+                {"role": "system", "content": ROLE_PROMPTS[self.role]},
+                {"role": "user", "content": prompt}
+            ]
+            
+            data = {
+                "messages": messages,
+                "model": self.model_name,
+                "max_tokens": self.max_tokens,
+                "temperature": self.temperature,
+                "top_p": 0.9
+            }
+            
+            self.total_api_calls += 1
+            
+            # Make API request
+            response = requests.post(
+                self.api_url,
+                headers=headers,
+                json=data,
+                timeout=60  # 60 second timeout
+            )
+            
+            response.raise_for_status()
+            
+            # Extract response
+            result = response.json()
+            if "choices" in result and len(result["choices"]) > 0:
+                content = result["choices"][0]["message"]["content"]
+                return content.strip()
+            else:
+                logger.error(f"Unexpected API response format: {result}")
+                return None
+                
+        except requests.exceptions.Timeout:
+            logger.error(f"{self.neuron_id}: API request timed out")
+            return None
+        except requests.exceptions.RequestException as e:
+            logger.error(f"{self.neuron_id}: API request failed: {e}")
+            return None
+        except Exception as e:
+            logger.error(f"{self.neuron_id}: Error in API call: {e}")
+            return None
+
+    def _simulate_output(
+        self,
+        input_signal: NeuronSignal,
+        global_context: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """Return a lightweight simulated response when API is not available."""
+        context_bits = []
+        if global_context:
+            if memory := global_context.get("memory"):
+                short_term = memory.get("short_term") or []
+                if short_term:
+                    context_bits.append(f"Recent memory: {short_term[-1]}")
+        
+        base_response = (
+            f"[{self.role.value}] processed input '{input_signal.content[:60]}'. "
+            "(simulation mode - no API key)"
+        )
+        if context_bits:
+            base_response += " Context -> " + " | ".join(context_bits)
+        return base_response
+
+    def receive_signal(
+        self,
+        signal: NeuronSignal,
+        source_weight: float = 1.0
+    ):
+        """
+        Receive signal from another neuron
+        
+        Args:
+            signal: Input signal
+            source_weight: Weight of source connection
+        """
+        self.total_signals_received += 1
+        
+        # Modulate signal by connection weight
+        weighted_signal = NeuronSignal(
+            content=signal.content,
+            source_role=signal.source_role,
+            activation_level=signal.activation_level * source_weight,
+            metadata={**signal.metadata, "source_weight": source_weight}
+        )
+        
+        self.signal_history.append(weighted_signal)
+
+    def propagate(
+        self,
+        output: str,
+        learning_rate: float = 0.01
+    ) -> int:
+        """
+        Propagate output to connected neurons
+        
+        Implements Hebbian learning to update connection weights.
+        
+        Args:
+            output: Output to propagate
+            learning_rate: Hebbian learning rate
+            
+        Returns:
+            Number of neurons signal was propagated to
+        """
+        if not output:
+            return 0
+        
+        propagation_count = 0
+        
+        # Create outgoing signal
+        signal = NeuronSignal(
+            content=output,
+            source_role=self.role,
+            activation_level=self.activation_level,
+            metadata={"neuron_id": self.neuron_id}
+        )
+        
+        for connection in self.connections:
+            # Only propagate if connection is strong enough
+            if connection.weight >= 0.3:  # Minimum propagation threshold
+                # Send signal
+                connection.target_neuron.receive_signal(signal, connection.weight)
+                self.total_signals_sent += 1
+                propagation_count += 1
+                
+                # Hebbian learning: strengthen connection if both neurons are active
+                target_activation = connection.target_neuron.activation_level
+                new_weight = hebbian_update(
+                    connection.weight,
+                    self.activation_level,
+                    target_activation,
+                    learning_rate
+                )
+                
+                connection.weight = new_weight
+                connection.last_updated = datetime.now()
+        
+        return propagation_count
+
+    def connect_to(self, target_neuron: 'APINeuron', weight: float):
+        """
+        Create connection to another neuron
+        
+        Args:
+            target_neuron: Target neuron
+            weight: Initial connection weight
+        """
+        connection = NeuronConnection(
+            target_neuron=target_neuron,
+            weight=np.clip(weight, 0.0, 1.0)
+        )
+        
+        # Avoid duplicate connections
+        if connection not in self.connections:
+            self.connections.append(connection)
+            logger.debug(f"Connected {self.neuron_id} → {target_neuron.neuron_id} (weight={weight:.2f})")
+
+    def decay_connections(self, decay_rate: float = 0.001):
+        """
+        Apply decay to connection weights (synaptic pruning)
+        
+        Args:
+            decay_rate: Rate of weight decay
+        """
+        for connection in self.connections:
+            connection.weight = max(0.0, connection.weight - decay_rate)
+
+    def get_stats(self) -> Dict[str, Any]:
+        """Get neuron statistics"""
+        return {
+            "neuron_id": self.neuron_id,
+            "role": self.role.value,
+            "device": "api",
+            "activation_level": self.activation_level,
+            "total_firings": self.total_firings,
+            "total_signals_received": self.total_signals_received,
+            "total_signals_sent": self.total_signals_sent,
+            "total_api_calls": self.total_api_calls,
+            "total_api_errors": self.total_api_errors,
+            "api_success_rate": (self.total_api_calls - self.total_api_errors) / self.total_api_calls if self.total_api_calls > 0 else 0.0,
+            "num_connections": len(self.connections),
+            "avg_connection_weight": np.mean([c.weight for c in self.connections]) if self.connections else 0.0,
+            "recent_activations": self.activation_history.get_recent(10)
+        }
+
+    def reset(self):
+        """Reset neuron state"""
+        self.activation_level = 0.0
+        self.is_firing = False
+        self.signal_history.clear()
+
+    def __repr__(self) -> str:
+        return f"APINeuron(id={self.neuron_id}, role={self.role.value}, activation={self.activation_level:.3f})"
