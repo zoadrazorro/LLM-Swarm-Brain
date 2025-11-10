@@ -360,6 +360,7 @@ def main():
     parser.add_argument("--load-models", action="store_true", help="Load actual models (default: simulation)")
     parser.add_argument("--use-api", action="store_true", help="Use Hyperbolic API (Llama 3.1 405B)")
     parser.add_argument("--api-key", type=str, help="Hyperbolic API key (or set HYPERBOLIC_API_KEY env var)")
+    parser.add_argument("--use-64-neurons", action="store_true", help="Use 64-neuron architecture (default: 8)")
     parser.add_argument("--start-level", type=int, default=1, help="Starting level (1-10)")
     parser.add_argument("--end-level", type=int, default=10, help="Ending level (1-10)")
     parser.add_argument("--questions-per-level", type=int, default=10, help="Questions per level (max 10)")
@@ -387,12 +388,15 @@ def main():
         use_api = False
         load_models = False
     
+    neuron_count = 64 if args.use_64_neurons else 8
+    
     logger.info(f"\n{'='*80}")
     logger.info("EXPANDED PHILOSOPHY TEST - LLM-SWARM-BRAIN")
     logger.info(f"{'='*80}")
     logger.info(f"Test Configuration:")
     logger.info(f"  - Mode: {mode_desc}")
     logger.info(f"  - Execution: {'API (Llama 3.1 405B)' if use_api else 'Local Models' if load_models else 'Simulation'}")
+    logger.info(f"  - Architecture: {neuron_count} neurons")
     logger.info(f"  - Questions per Level: {max_per_level}")
     logger.info(f"  - Levels: {start_level}-{end_level}")
     logger.info(f"  - Total Questions: {(end_level - start_level + 1) * max_per_level}")
@@ -400,14 +404,22 @@ def main():
     try:
         # Initialize brain
         logger.info(f"\n[1] Initializing PhiBrain...")
-        config = BrainConfig()
+        config = None
+        if args.use_64_neurons:
+            from llm_swarm_brain import config_64
+            config = config_64.BrainConfig()
+        else:
+            config = BrainConfig()
+        
         if use_api:
             config.model_name = "meta-llama/Meta-Llama-3.1-405B-Instruct"
+        
         brain = PhiBrain(
             config=config,
             load_models=load_models,
             use_api=use_api,
-            api_key=args.api_key
+            api_key=args.api_key,
+            use_64_neurons=args.use_64_neurons
         )
         
         # Run test

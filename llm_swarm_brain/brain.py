@@ -29,6 +29,13 @@ from llm_swarm_brain.config import (
     NEURON_ARCHITECTURE,
     DEFAULT_CONNECTIONS
 )
+
+# Support for 64-neuron config
+try:
+    from llm_swarm_brain import config_64
+    HAS_64_CONFIG = True
+except ImportError:
+    HAS_64_CONFIG = False
 from llm_swarm_brain.utils import CircularBuffer, calculate_phi
 
 
@@ -121,7 +128,8 @@ class PhiBrain:
         load_models: bool = True,
         enable_positronic: bool = True,
         use_api: bool = False,
-        api_key: Optional[str] = None
+        api_key: Optional[str] = None,
+        use_64_neurons: bool = False
     ):
         """
         Initialize PhiBrain
@@ -132,10 +140,28 @@ class PhiBrain:
             enable_positronic: Enable positronic dialectical framework
             use_api: Use API-based neurons instead of local models
             api_key: API key for Hyperbolic (or set HYPERBOLIC_API_KEY env var)
+            use_64_neurons: Use 64-neuron architecture instead of 8-neuron
         """
-        self.config = config or BrainConfig()
+        # Use 64-neuron config if requested
+        if use_64_neurons:
+            if not HAS_64_CONFIG:
+                raise ImportError("64-neuron config not available")
+            self.config = config or config_64.BrainConfig()
+            self._neuron_architecture = config_64.NEURON_ARCHITECTURE
+            self._default_connections = config_64.DEFAULT_CONNECTIONS
+            self._role_prompts = config_64.ROLE_PROMPTS
+            self._neuron_role_enum = config_64.NeuronRole
+        else:
+            self.config = config or BrainConfig()
+            self._neuron_architecture = NEURON_ARCHITECTURE
+            self._default_connections = DEFAULT_CONNECTIONS
+            from llm_swarm_brain.config import ROLE_PROMPTS
+            self._role_prompts = ROLE_PROMPTS
+            self._neuron_role_enum = NeuronRole
+        
         self.use_api = use_api
         self.api_key = api_key
+        self.use_64_neurons = use_64_neurons
         self.load_models = load_models if not use_api else False
         self.enable_positronic = enable_positronic
 
@@ -210,20 +236,21 @@ class PhiBrain:
         # Choose neuron class based on mode
         NeuronClass = APINeuron if self.use_api else Phi3Neuron
         mode_str = "API-based" if self.use_api else "local GPU-based"
+        arch_str = "64-neuron" if self.use_64_neurons else "8-neuron"
 
         # Iterate through all GPUs (or API endpoints)
         for gpu_id in range(self.config.gpu_count):
             gpu_key = f"gpu_{gpu_id}"
 
-            if gpu_key not in NEURON_ARCHITECTURE:
+            if gpu_key not in self._neuron_architecture:
                 continue
 
             # Get layers for this GPU
-            layers = NEURON_ARCHITECTURE[gpu_key]
+            layers = self._neuron_architecture[gpu_key]
 
             for layer_name, roles in layers.items():
                 for role in roles:
-                    neuron_id = f"expert{gpu_id}_{layer_name}_{role.value}"
+                    neuron_id = f"n{gpu_id}_{layer_name}_{role.value}"
                     
                     if self.use_api:
                         neuron = APINeuron(
@@ -257,13 +284,13 @@ class PhiBrain:
                         self.memory_neurons.append(neuron)
                     elif "reasoning" in layer_name or "creative" in layer_name or "analytical" in layer_name:
                         self.reasoning_neurons.append(neuron)
-                    elif "synthesis" in layer_name or "meta" in layer_name:
+                    elif "synthesis" in layer_name or "meta" in layer_name or "meta_cognitive" in layer_name:
                         self.action_neurons.append(neuron)
 
                     neuron_count += 1
 
         logger.info(
-            f"Initialized {neuron_count} {mode_str} neurons "
+            f"Initialized {neuron_count} {mode_str} neurons ({arch_str} architecture) "
             f"(Perception: {len(self.perception_neurons)}, "
             f"Memory: {len(self.memory_neurons)}, "
             f"Reasoning: {len(self.reasoning_neurons)}, "
@@ -272,7 +299,7 @@ class PhiBrain:
 
     def _setup_network(self):
         """Setup neural connections"""
-        self.orchestrator.setup_connections(DEFAULT_CONNECTIONS)
+        self.orchestrator.setup_connections(self._default_connections)
 
     def think(
         self,
