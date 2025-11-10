@@ -275,7 +275,7 @@ class PhiBrain:
                                 gpu_id=gpu_id,
                                 neuron_id=neuron_id,
                                 activation_threshold=self.config.activation_threshold,
-                                model_name="gemini-2.5-pro",
+                                model_name="gemini-2.0-flash-exp",  # Latest Gemini model
                                 max_tokens=self.config.max_tokens,
                                 temperature=self.config.temperature,
                                 api_key=self.api_key
