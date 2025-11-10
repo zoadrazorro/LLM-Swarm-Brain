@@ -87,36 +87,25 @@ class AttentionWindowManager:
         # Define affinities (simplified version)
         # In full version, this could be learned from data
 
-        # Perception roles
+        # MoE Expert roles - organized by cognitive pipeline
         perception_roles = [
-            NeuronRole.VISUAL_PERCEPTION,
-            NeuronRole.SEMANTIC_PERCEPTION,
-            NeuronRole.PATTERN_RECOGNITION,
-            NeuronRole.ANOMALY_DETECTION
+            NeuronRole.PERCEPTION_EXPERT,
+            NeuronRole.ATTENTION_EXPERT,
         ]
 
-        # Memory roles (using first instance of each type)
         memory_roles = [
-            NeuronRole.SHORT_TERM_MEMORY_1,
-            NeuronRole.EPISODIC_MEMORY_1,
-            NeuronRole.SEMANTIC_MEMORY_1,
-            NeuronRole.WORKING_MEMORY_1
+            NeuronRole.MEMORY_EXPERT,
         ]
 
-        # Reasoning roles
         reasoning_roles = [
-            NeuronRole.LOGICAL_REASONING,
-            NeuronRole.CREATIVE_THINKING,
-            NeuronRole.CAUSAL_ANALYSIS,
-            NeuronRole.HYPOTHESIS_GENERATION
+            NeuronRole.REASONING_EXPERT,
+            NeuronRole.CREATIVE_EXPERT,
+            NeuronRole.ANALYTICAL_EXPERT,
         ]
 
-        # Action roles
         action_roles = [
-            NeuronRole.ACTION_PLANNING,
-            NeuronRole.DECISION_MAKING,
-            NeuronRole.OUTPUT_SYNTHESIS,
-            NeuronRole.SELF_CRITIQUE
+            NeuronRole.SYNTHESIS_EXPERT,
+            NeuronRole.META_COGNITIVE_EXPERT,
         ]
 
         all_roles = perception_roles + memory_roles + reasoning_roles + action_roles
