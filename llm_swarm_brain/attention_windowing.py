@@ -95,12 +95,12 @@ class AttentionWindowManager:
             NeuronRole.ANOMALY_DETECTION
         ]
 
-        # Memory roles
+        # Memory roles (using first instance of each type)
         memory_roles = [
-            NeuronRole.SHORT_TERM_MEMORY,
-            NeuronRole.EPISODIC_MEMORY,
-            NeuronRole.SEMANTIC_MEMORY,
-            NeuronRole.WORKING_MEMORY
+            NeuronRole.SHORT_TERM_MEMORY_1,
+            NeuronRole.EPISODIC_MEMORY_1,
+            NeuronRole.SEMANTIC_MEMORY_1,
+            NeuronRole.WORKING_MEMORY_1
         ]
 
         # Reasoning roles
