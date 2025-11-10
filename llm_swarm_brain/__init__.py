@@ -14,6 +14,10 @@ from llm_swarm_brain.neuron import Phi3Neuron, NeuronSignal
 from llm_swarm_brain.orchestrator import NeuralOrchestrator
 from llm_swarm_brain.gw_theory import GlobalWorkspace, ConsciousnessMonitor
 from llm_swarm_brain.positronic_framework import PositronicFramework, LogicGate
+from llm_swarm_brain.summarization import SummarizationNeuron
+from llm_swarm_brain.attention_windowing import AttentionWindowManager
+from llm_swarm_brain.conceptual_threading import ConceptualThreadTracker
+from llm_swarm_brain.meta_orchestration import MetaOrchestrator
 from llm_swarm_brain.config import BrainConfig, NeuronRole
 
 __all__ = [
@@ -25,6 +29,10 @@ __all__ = [
     "ConsciousnessMonitor",
     "PositronicFramework",
     "LogicGate",
+    "SummarizationNeuron",
+    "AttentionWindowManager",
+    "ConceptualThreadTracker",
+    "MetaOrchestrator",
     "BrainConfig",
     "NeuronRole",
 ]

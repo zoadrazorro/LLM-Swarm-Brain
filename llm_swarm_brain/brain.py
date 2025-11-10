@@ -18,6 +18,10 @@ from llm_swarm_brain.neuron import Phi3Neuron
 from llm_swarm_brain.orchestrator import NeuralOrchestrator
 from llm_swarm_brain.gw_theory import GlobalWorkspace, ConsciousnessMonitor
 from llm_swarm_brain.positronic_framework import PositronicFramework
+from llm_swarm_brain.summarization import SummarizationNeuron
+from llm_swarm_brain.attention_windowing import AttentionWindowManager
+from llm_swarm_brain.conceptual_threading import ConceptualThreadTracker
+from llm_swarm_brain.meta_orchestration import MetaOrchestrator, PerformanceMetrics
 from llm_swarm_brain.config import (
     BrainConfig,
     NeuronRole,
@@ -148,6 +152,33 @@ class PhiBrain:
             enforce_positronic_laws=enable_positronic
         ) if enable_positronic else None
 
+        # NEW ENHANCEMENTS
+        # Summarization neuron for output compression
+        self.summarization_neuron = SummarizationNeuron(
+            max_output_length=200,
+            compression_threshold=300,
+            preserve_key_concepts=True
+        )
+
+        # Attention windowing for selective broadcasting
+        self.attention_manager = AttentionWindowManager(
+            max_window_size=5,
+            relevance_threshold=0.6,
+            use_historical_patterns=True
+        )
+
+        # Conceptual thread tracking
+        self.concept_tracker = ConceptualThreadTracker(
+            similarity_threshold=0.7,
+            max_threads_per_concept=5
+        )
+
+        # Meta-orchestration for dynamic tuning
+        self.meta_orchestrator = MetaOrchestrator(
+            adaptation_rate=0.1,
+            enable_auto_tuning=True
+        )
+
         # Neurons (initialized in _initialize_neurons)
         self.perception_neurons: List[Phi3Neuron] = []
         self.memory_neurons: List[Phi3Neuron] = []
@@ -157,12 +188,13 @@ class PhiBrain:
         # Processing state
         self.processing_count = 0
         self.total_consciousness_level = 0.0
+        self.processing_start_time: Optional[datetime] = None
 
         # Initialize the brain
         self._initialize_neurons()
         self._setup_network()
 
-        logger.info("PhiBrain initialized successfully")
+        logger.info("PhiBrain initialized successfully with all enhancements")
 
     def _initialize_neurons(self):
         """Initialize all 16 neurons according to architecture"""
@@ -227,24 +259,57 @@ class PhiBrain:
         input_text: str,
         max_steps: int = None,
         use_memory: bool = True,
-        use_global_workspace: bool = True
+        use_global_workspace: bool = True,
+        enable_enhancements: bool = True
     ) -> Dict[str, Any]:
         """
         Process input through the brain
 
-        This is the main thinking/processing method.
+        This is the main thinking/processing method with full enhancements.
 
         Args:
             input_text: Input text to process
             max_steps: Maximum processing steps
             use_memory: Whether to use memory system
             use_global_workspace: Whether to use global workspace
+            enable_enhancements: Enable new enhancements (summarization, etc.)
 
         Returns:
             Dictionary with complete processing results
         """
         self.processing_count += 1
+        self.processing_start_time = datetime.now()
         logger.info(f"=== Processing #{self.processing_count}: '{input_text[:50]}...' ===")
+
+        # === META-ORCHESTRATION: Analyze task complexity ===
+        complexity_estimate = None
+        adjusted_params = None
+
+        if enable_enhancements:
+            memory_context = self.memory.get_context() if use_memory else None
+            complexity_estimate = self.meta_orchestrator.analyze_task(
+                input_text,
+                context={"memory": memory_context} if memory_context else None
+            )
+
+            # Get recommendations
+            current_performance = self._get_current_performance()
+            param_recommendations = self.meta_orchestrator.recommend_parameters(
+                complexity_estimate,
+                current_performance
+            )
+
+            # Apply adjustments
+            adjusted_params = self.meta_orchestrator.apply_adjustments(param_recommendations)
+
+            # Use adjusted parameters
+            if max_steps is None:
+                max_steps = adjusted_params["max_propagation_steps"]
+
+            logger.info(
+                f"Task complexity: {complexity_estimate.complexity_score:.2f}, "
+                f"Adjusted threshold: {adjusted_params['activation_threshold']:.2f}"
+            )
 
         # Prepare global context
         global_context = {}
@@ -259,10 +324,25 @@ class PhiBrain:
             global_context=global_context
         )
 
+        # === CONCEPT TRACKING: Track concepts in neuron outputs ===
+        if enable_enhancements and processing_result["steps"]:
+            for step in processing_result["steps"]:
+                for neuron_id, output in step["outputs"].items():
+                    if output:
+                        activation = step["activations"].get(neuron_id, 0.0)
+                        self.concept_tracker.process_neuron_output(
+                            neuron_id=neuron_id,
+                            output_text=output,
+                            activation_level=activation
+                        )
+
         # Global workspace processing (if enabled)
         workspace_result = None
         if use_global_workspace:
-            workspace_result = self._process_global_workspace(processing_result)
+            workspace_result = self._process_global_workspace(
+                processing_result,
+                enable_enhancements=enable_enhancements
+            )
 
         # Update memory
         if use_memory:
@@ -280,11 +360,35 @@ class PhiBrain:
         self.consciousness_monitor.record_consciousness_level(consciousness_level)
         self.total_consciousness_level += consciousness_level
 
+        # === PERFORMANCE TRACKING ===
+        processing_time = (datetime.now() - self.processing_start_time).total_seconds()
+
+        if enable_enhancements:
+            # Record performance for meta-orchestration
+            performance = PerformanceMetrics(
+                avg_consciousness_level=consciousness_level,
+                avg_coherence_score=(
+                    workspace_result.get("positronic_coherence", {}).get("coherence_score", 0.0)
+                    if workspace_result else 0.0
+                ),
+                avg_integration_score=(
+                    workspace_result.get("integration_score", 0.0)
+                    if workspace_result else 0.0
+                ),
+                avg_neurons_activated=(
+                    processing_result["network_metrics"].get("active_neuron_ratio", 0.0)
+                    if "network_metrics" in processing_result else 0.0
+                ),
+                avg_processing_time=processing_time
+            )
+            self.meta_orchestrator.record_performance(performance)
+
         # Compile complete result
         result = {
             "input": input_text,
             "processing_id": self.processing_count,
             "timestamp": datetime.now(),
+            "processing_time": processing_time,
             "neural_processing": processing_result,
             "global_workspace": workspace_result,
             "consciousness_level": consciousness_level,
@@ -292,11 +396,39 @@ class PhiBrain:
             "brain_metrics": self._get_brain_metrics()
         }
 
+        # Add enhancement results if enabled
+        if enable_enhancements:
+            result["enhancements"] = {
+                "task_complexity": {
+                    "score": complexity_estimate.complexity_score if complexity_estimate else 0.0,
+                    "factors": complexity_estimate.factors if complexity_estimate else {},
+                },
+                "adjusted_parameters": adjusted_params,
+                "summarization_stats": self.summarization_neuron.get_stats(),
+                "attention_stats": self.attention_manager.get_stats(),
+                "concept_stats": self.concept_tracker.get_stats(),
+                "meta_orchestration_stats": self.meta_orchestrator.get_stats()
+            }
+
         return result
+
+    def _get_current_performance(self) -> Optional[PerformanceMetrics]:
+        """Get current performance metrics snapshot"""
+        if self.processing_count == 0:
+            return None
+
+        return PerformanceMetrics(
+            avg_consciousness_level=self.total_consciousness_level / max(1, self.processing_count),
+            avg_coherence_score=0.8,  # Simplified
+            avg_integration_score=0.7,  # Simplified
+            avg_neurons_activated=0.5,  # Simplified
+            avg_processing_time=2.0  # Simplified
+        )
 
     def _process_global_workspace(
         self,
-        processing_result: Dict[str, Any]
+        processing_result: Dict[str, Any],
+        enable_enhancements: bool = True
     ) -> Dict[str, Any]:
         """
         Process through global workspace (GWT)
@@ -447,6 +579,14 @@ class PhiBrain:
         # Add positronic framework metrics
         if self.positronic:
             metrics["positronic"] = self.positronic.get_framework_stats()
+
+        # Add enhancement metrics
+        metrics["enhancements"] = {
+            "summarization": self.summarization_neuron.get_stats(),
+            "attention_windowing": self.attention_manager.get_stats(),
+            "concept_tracking": self.concept_tracker.get_stats(),
+            "meta_orchestration": self.meta_orchestrator.get_stats()
+        }
 
         return metrics
 

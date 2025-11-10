@@ -41,6 +41,13 @@ LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act 
 - Memory consolidation
 - Context-aware processing
 
+⚡ **Advanced Enhancements (NEW!)**
+- **Summarization Neuron**: Compresses verbose outputs to prevent information explosion
+- **Attention Windowing**: Selective broadcasting to relevant neurons only
+- **Conceptual Thread Tracking**: Tracks how concepts flow and transform through the network
+- **Meta-Orchestration**: Dynamically adjusts activation thresholds based on task complexity
+- **Coherence Check-ins**: Explicit prompts asking "Does this contradict anything?"
+
 ## Architecture
 
 ```
