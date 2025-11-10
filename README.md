@@ -10,9 +10,10 @@
 
 LLM-Swarm-Brain implements a **cognitive architecture** where **individual LLMs act as specialized neurons** in a neural network. Each neuron has a unique cognitive function (perception, memory, reasoning, etc.) and communicates through a rich network of weighted connections.
 
-**Two Deployment Modes:**
+**Three Deployment Modes:**
 - **🖥️ Local Mode**: 8 neurons using Qwen2.5-72B on 8× H100 GPUs (8 neurons per GPU)
 - **☁️ API Mode**: 8 or 64 neurons using Llama 3.1 405B via Hyperbolic API (no GPU required!)
+- **🎮 Local GPU Mode**: 2-4 neurons using Phi-4 (14B) on consumer GPUs via LM Studio (FREE!)
 
 The system creates emergent intelligent behavior aligned with cognitive science theories including Global Workspace Theory (GWT) and Integrated Information Theory (IIT).
 
@@ -22,8 +23,9 @@ The system creates emergent intelligent behavior aligned with cognitive science 
 - **8-Neuron MoE**: 8 specialized experts (Perception, Attention, Memory, Reasoning, Creative, Analytical, Synthesis, Meta-Cognitive)
 - **64-Neuron Dense**: 64 highly specialized neurons across 8 cognitive layers
 - **128-Neuron Ultra-Dense**: 128 ultra-specialized neurons across 16 cognitive sub-layers
-- **Local**: Qwen2.5-72B (72B params, 4-bit quantized)
+- **Local H100**: Qwen2.5-72B (72B params, 4-bit quantized)
 - **API**: Llama 3.1 405B (Hyperbolic) or Gemini 2.0 Flash (Google)
+- **Local GPU**: Phi-4 (14B params, Q4 quantized) via LM Studio
 - Rich interconnection patterns (14 → 656 → 2000+ connections)
 
 🌐 **Global Workspace Theory (GWT)**
@@ -57,6 +59,8 @@ The system creates emergent intelligent behavior aligned with cognitive science 
 - **Conceptual Thread Tracking**: Tracks how concepts flow and transform through the network
 - **Meta-Orchestration**: Dynamically adjusts activation thresholds based on task complexity
 - **Coherence Check-ins**: Explicit prompts asking "Does this contradict anything?"
+- **RAG Memory**: Retrieval-Augmented Generation with semantic search over training history
+- **Continuous Learning**: Step-by-step memory updates during reasoning for cumulative knowledge
 
 📊 **Philosophy Test Suite**
 - **40-Question Test**: 8 complexity levels testing philosophical reasoning
@@ -327,6 +331,44 @@ brain = PhiBrain(config=config, load_models=True)
 result = brain.think("Explain quantum entanglement")
 ```
 
+### Local GPU Mode (Consumer GPUs + LM Studio)
+
+**Train on your own hardware for FREE!**
+
+```bash
+# Setup dual-GPU training (e.g., 2x AMD Radeon RX 7900 XT)
+.\setup_dual_gpu.ps1
+
+# Start LM Studio servers
+.\start_lmstudio_gpu0.bat  # GPU 0 on port 1234
+.\start_lmstudio_gpu1.bat  # GPU 1 on port 1235
+
+# Verify both servers
+.\verify_dual_gpu.ps1
+
+# Train on philosophy dataset (100 questions, FREE!)
+python train_local_7900xt.py --questions 100 --max-steps 2
+
+# Training with shared RAG memory (syncs with cloud training)
+# Local and cloud training share the same memory for unified learning
+```
+
+**Supported GPUs:**
+- AMD Radeon RX 7900 XT/XTX (20-24 GB VRAM)
+- NVIDIA RTX 4090 (24 GB VRAM)
+- NVIDIA RTX 4080 (16 GB VRAM)
+- Any GPU with 16+ GB VRAM
+
+**Features:**
+- ✅ FREE training (no API costs)
+- ✅ Phi-4 (14B) model with enhanced reasoning
+- ✅ 2-4 neurons depending on VRAM
+- ✅ Shared RAG memory with cloud training
+- ✅ Faster inference than cloud (40-60s vs 150s per question)
+- ✅ Complete privacy (all local)
+
+See [DUAL_GPU_QUICK_START.md](DUAL_GPU_QUICK_START.md) for full guide.
+
 ### Philosophy Test Suite
 
 ```bash
@@ -344,6 +386,9 @@ python expanded_inference_test_philosophy.py --use-api --api-provider gemini --s
 
 # Deep reasoning test (2 complex questions, 128 neurons, 5 steps)
 python deep_reasoning_test.py --neurons 128 --api-provider gemini --max-steps 5
+
+# Philosophy dataset training (500 questions on cloud)
+python train_philosophy_dataset.py --sample-size 500 --neurons 8 --api-provider hyperbolic
 ```
 
 ## Examples
@@ -481,24 +526,36 @@ config = BrainConfig(
 
 ### Comparison
 
-| Metric | API (8N) | API (64N) | Local (8N) |
-|--------|----------|-----------|------------|
-| Model Size | 405B | 405B | 72B |
-| Cost/Query | $0.003 | $0.02 | $0.01* |
-| Latency | 10s | 60s | 3s |
-| GPU Required | No | No | Yes (8×) |
-| Neurons | 8 | 64 | 8 |
-| Connections | 14 | 656 | 14 |
+| Metric | API (8N) | API (64N) | Local H100 (8N) | Local GPU (4N) |
+|--------|----------|-----------|-----------------|----------------|
+| Model Size | 405B | 405B | 72B | 14B |
+| Cost/Query | $0.003 | $0.02 | $0.01* | **FREE** |
+| Latency | 10s | 60s | 3s | 50s |
+| GPU Required | No | No | Yes (8× H100) | Yes (1-2× consumer) |
+| Neurons | 8 | 64 | 8 | 2-4 |
+| Connections | 14 | 656 | 14 | 4-11 |
+| Privacy | Cloud | Cloud | Local | **Local** |
 
 *Amortized GPU rental cost
 
 ## Documentation
 
+### Core Documentation
 - **[API Mode Guide](API_MODE.md)** - Complete guide to using Hyperbolic API
 - **[MoE Architecture](MOE_ARCHITECTURE.md)** - 8-neuron Mixture of Experts design
 - **[Philosophy Test Guide](PHILOSOPHY_TEST.md)** - 40-question test suite documentation
 - [Architecture Documentation](README_ARCHITECTURE.md) - Detailed technical documentation
 - [Cognitive Science Background](docs/COGNITIVE_SCIENCE.md) - Theory and references
+
+### Local GPU Training
+- **[Dual-GPU Quick Start](DUAL_GPU_QUICK_START.md)** - 5-minute setup for dual-GPU training
+- **[Dual-GPU Setup Guide](DUAL_GPU_SETUP.md)** - Complete dual-GPU configuration
+- **[Local Training Guide](LOCAL_TRAINING_GUIDE.md)** - LM Studio setup and usage
+- **[Philosophy Dataset Training](PHILOSOPHY_DATASET_TRAINING.md)** - Large-scale training guide
+
+### Advanced Features
+- **[RAG Memory Analysis](TRAINING_RAG_ANALYSIS.md)** - Retrieval-Augmented Generation system
+- **[Architecture Deep Dive](ARCHITECTURE_DEEP_DIVE.md)** - Technical implementation details
 
 ## Development
 
@@ -521,6 +578,11 @@ flake8 llm_swarm_brain/
 - [x] 64-neuron dense architecture
 - [x] Philosophy test suite (100 questions)
 - [x] MoE architecture (8 specialized experts)
+- [x] **Local GPU training with Phi-4 via LM Studio**
+- [x] **RAG memory with semantic retrieval**
+- [x] **Continuous learning with step-by-step memory updates**
+- [x] **Dual-GPU support for consumer hardware**
+- [x] **Philosophy dataset training (500 questions)**
 - [ ] Multi-provider API support (OpenAI, Anthropic, etc.)
 - [ ] Async API calls for parallel execution
 - [ ] Dynamic network topology
