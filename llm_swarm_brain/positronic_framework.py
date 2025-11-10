@@ -452,6 +452,96 @@ class CoherenceValidator:
 
         return 0.9  # Assume high self-consistency by default
 
+    def generate_checkin_prompts(
+        self,
+        current_output: str,
+        prior_outputs: List[str] = None
+    ) -> List[str]:
+        """
+        Generate explicit check-in prompts for coherence validation
+
+        These prompts explicitly ask the system to check for contradictions
+        and inconsistencies, strengthening coherence validation.
+
+        Args:
+            current_output: Current output to check
+            prior_outputs: Previous outputs to check against
+
+        Returns:
+            List of check-in prompt questions
+        """
+        prompts = []
+
+        # Core coherence question
+        prompts.append(
+            f"Does the following statement contradict anything I've processed before? "
+            f"Statement: {current_output[:200]}..."
+        )
+
+        # Logical consistency check
+        prompts.append(
+            "Are there any logical inconsistencies or contradictions in my recent outputs?"
+        )
+
+        # Self-consistency check
+        prompts.append(
+            "Am I maintaining consistency with my previous conclusions and reasoning?"
+        )
+
+        # Truth preservation check
+        prompts.append(
+            "Have I preserved the core truth and meaning through my processing?"
+        )
+
+        # If prior outputs available, add specific checks
+        if prior_outputs:
+            prompts.append(
+                f"How does my current output align with these previous outputs: "
+                f"{', '.join([o[:50] + '...' for o in prior_outputs[:3]])}?"
+            )
+
+        # Positronic law compliance
+        prompts.append(
+            "Am I complying with the three positronic laws: "
+            "(1) Coherence and truth preservation, "
+            "(2) Logical consistency, "
+            "(3) Self-consistency?"
+        )
+
+        return prompts
+
+    def evaluate_checkin_responses(
+        self,
+        responses: List[str]
+    ) -> Tuple[bool, List[str]]:
+        """
+        Evaluate responses to check-in prompts
+
+        Args:
+            responses: Responses to check-in prompts
+
+        Returns:
+            Tuple of (is_coherent, list_of_issues)
+        """
+        issues = []
+        concern_markers = [
+            'contradiction', 'inconsistent', 'conflict', 'disagree',
+            'violate', 'error', 'incorrect', 'false', 'problem'
+        ]
+
+        for response in responses:
+            response_lower = response.lower()
+
+            # Check for concern markers
+            for marker in concern_markers:
+                if marker in response_lower:
+                    issues.append(f"Potential issue detected: {response[:100]}...")
+                    break
+
+        is_coherent = len(issues) == 0
+
+        return is_coherent, issues
+
 
 class PositronicFramework:
     """
@@ -576,6 +666,41 @@ class PositronicFramework:
             # In a full implementation, this could trigger corrective actions
 
         return report
+
+    def generate_coherence_checkins(
+        self,
+        current_output: str,
+        prior_outputs: List[str] = None
+    ) -> List[str]:
+        """
+        Generate coherence check-in prompts
+
+        Args:
+            current_output: Current output to check
+            prior_outputs: Prior outputs for comparison
+
+        Returns:
+            List of check-in prompts
+        """
+        return self.coherence_validator.generate_checkin_prompts(
+            current_output,
+            prior_outputs
+        )
+
+    def evaluate_coherence_checkins(
+        self,
+        responses: List[str]
+    ) -> Tuple[bool, List[str]]:
+        """
+        Evaluate check-in responses
+
+        Args:
+            responses: Responses to check-in prompts
+
+        Returns:
+            Tuple of (is_coherent, issues)
+        """
+        return self.coherence_validator.evaluate_checkin_responses(responses)
 
     def get_framework_stats(self) -> Dict[str, Any]:
         """Get framework statistics"""
