@@ -1,0 +1,55 @@
+{
+  "test_type": "deep_reasoning",
+  "timestamp": "2025-11-10T16:34:10.028134",
+  "config": {
+    "model": "meta-llama/Meta-Llama-3.1-405B-Instruct",
+    "total_neurons": 64,
+    "max_steps": 3,
+    "architecture": "64-neuron"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "title": "The Hard Problem of Consciousness & Personal Identity",
+      "question": "\nConsider the following multi-part philosophical problem:\n\nPART A: The Hard Problem of Consciousness\nIf consciousness is substrate-independent (implementable in any physical system with \nthe right functional organization), then:\n1. What distinguishes genuine consciousness from mere simulation of consciousness?\n2. Could a sufficiently complex lookup table (China Brain) be conscious?\n3. What role does causal structure vs. functional organization play?\n\nPART B: Personal Identity Through Transformation\nNow suppose we gradually replace your neurons with silicon chips that maintain identical \nfunctional relationships:\n1. At what point (if any) do you cease to exist as the same person?\n2. Does the answer change if replacement happens instantaneously vs. gradually?\n3. If consciousness is substrate-independent, why does the substrate transition matter?\n\nPART C: Integration & Synthesis\n1. How do these two problems relate to each other?\n2. What does the relationship reveal about the nature of consciousness and identity?\n3. Can you construct a unified theory that addresses both problems coherently?\n4. What are the implications for AI consciousness, mind uploading, and moral status?\n\nProvide a deep, multi-layered analysis that integrates insights from philosophy of mind,\ncognitive science, ethics, and metaphysics. Consider objections and alternative views.\n",
+      "answer": "=== CONSCIOUS CONTENT ===\n1. [n1_attention_sustained_attention] (salience=0.829): ### Concrete Research Blueprint: **“Φ‑From‑Brain” – Approximating Integrated Information in Human an...\n2. [n1_attention_divided_attention] (salience=0.829): ## 1.  Why “Divide & Conquer” is the Only Way to Tackle the Hard Problem\n\nThe hard problem, identity...\n3. [n1_attention_salience_detection] (salience=0.829): **What Really Pops Out (and Why It Demands Attention)**  \n\n| # | Highlight | Why It Demands Attentio...\n4. [n1_attention_relevance_filtering] (salience=0.829): **Relevance‑Filtering Summary**\n\n| Category | Item | Why it is (or isn’t) relevant |\n|----------|---...\n5. [n1_attention_priority_ranking] (salience=0.829): Below is a **condensed, “top‑down” priority ranking** that captures the same logic your table alread...",
+      "duration_seconds": 2242.610223,
+      "duration_minutes": 37.37683705,
+      "consciousness_level": 0.5152416689822642,
+      "neurons_fired": 0,
+      "propagation_steps": 3,
+      "global_workspace_broadcasts": 12,
+      "integration_score": 1.0,
+      "coherence_score": 0.8361581920903954,
+      "expected_consciousness": "0.75-0.85",
+      "success": true
+    },
+    {
+      "id": 2,
+      "title": "Free Will, Determinism, and Moral Responsibility",
+      "question": "\nConsider this complex philosophical problem across multiple dimensions:\n\nPART A: The Trilemma\n1. Hard Determinism: If determinism is true, free will is impossible, so no moral responsibility\n2. Libertarianism: Free will requires indeterminism, but random actions aren't free either\n3. Compatibilism: Redefines freedom, but critics say it's just changing the subject\n\nAnalyze: Is there a fourth option that avoids all three horns? Or must we accept one horn?\n\nPART B: Quantum Mechanics & Causation\n1. Does quantum indeterminacy provide room for free will, or just randomness?\n2. If consciousness can influence quantum collapse (controversial), does this help?\n3. What role does emergence play - can macro-level freedom emerge from micro-level determinism?\n\nPART C: Moral Responsibility Without Libertarian Free Will\n1. Can we maintain moral responsibility if libertarian free will is impossible?\n2. What would a purely consequentialist/utilitarian account of responsibility look like?\n3. How do reactive attitudes (Strawson) relate to the metaphysics of free will?\n\nPART D: Practical Implications\n1. Should the criminal justice system change if we accept hard determinism?\n2. How does this affect our understanding of praise, blame, and desert?\n3. What are the implications for meaning, purpose, and human dignity?\n\nPART E: Meta-Level Integration\n1. How do different theories of causation affect this debate?\n2. What role does the manifest image vs. scientific image play?\n3. Can we reconcile our phenomenology of freedom with scientific understanding?\n4. Construct a coherent position that addresses all dimensions of the problem.\n\nProvide a comprehensive analysis that considers multiple philosophical traditions,\nscientific findings, and practical implications. Address counterarguments and\nsynthesize insights across domains.\n",
+      "answer": "=== CONSCIOUS CONTENT ===\n1. [n1_attention_selective_attention] (salience=0.829): Below is a **ready‑to‑use geometric blueprint** that you can plug into a data‑analysis pipeline or s...\n2. [n1_attention_sustained_attention] (salience=0.829): **SUSTAINED ATTENTION RESPONSE**  \n*Structured, bullet‑pointed, and focused on the core elements of ...\n3. [n1_attention_divided_attention] (salience=0.829): ## 1.  A Concrete Geometric Blueprint for the Identity Trajectory\n\n| Dimension | What it encodes | T...\n4. [n1_attention_salience_detection] (salience=0.829): **What Really Demands Your Attention**\n\n| # | Domain | Salient Issue | Why It Demands Focus |\n|---|-...\n5. [n1_attention_relevance_filtering] (salience=0.829): **Relevance Summary**\n\n| # | Item | Relevance | Why it matters |\n|---|------|-----------|-----------...",
+      "duration_seconds": 2216.666024,
+      "duration_minutes": 36.944433733333334,
+      "consciousness_level": 0.6532234757728729,
+      "neurons_fired": 0,
+      "propagation_steps": 3,
+      "global_workspace_broadcasts": 12,
+      "integration_score": 0.9227468367731615,
+      "coherence_score": 0.866543275163053,
+      "expected_consciousness": "0.80-0.90",
+      "success": true
+    }
+  ],
+  "summary": {
+    "total_questions": 2,
+    "successful": 2,
+    "total_duration_seconds": 4459.276247,
+    "total_duration_minutes": 74.32127078333333,
+    "avg_duration_per_question": 2229.6381235,
+    "avg_consciousness": 0.5842325723775685,
+    "avg_integration": 0.9613734183865807,
+    "avg_coherence": 0.8513507336267242,
+    "avg_neurons_fired": 0.0
+  }
+}
