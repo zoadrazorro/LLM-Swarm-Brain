@@ -63,7 +63,7 @@ class GeminiNeuron:
         gpu_id: int,  # Kept for compatibility, not used
         neuron_id: str,
         activation_threshold: float = 0.6,
-        model_name: str = "gemini-2.0-flash-exp",
+        model_name: str = "gemini-exp-1206",  # Latest: gemini-exp-1206, gemini-2.0-flash-exp, or custom
         max_tokens: int = 2048,
         temperature: float = 0.7,
         api_key: Optional[str] = None

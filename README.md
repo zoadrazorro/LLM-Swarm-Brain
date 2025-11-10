@@ -21,9 +21,10 @@ The system creates emergent intelligent behavior aligned with cognitive science 
 🧠 **Flexible Architecture**
 - **8-Neuron MoE**: 8 specialized experts (Perception, Attention, Memory, Reasoning, Creative, Analytical, Synthesis, Meta-Cognitive)
 - **64-Neuron Dense**: 64 highly specialized neurons across 8 cognitive layers
+- **128-Neuron Ultra-Dense**: 128 ultra-specialized neurons across 16 cognitive sub-layers
 - **Local**: Qwen2.5-72B (72B params, 4-bit quantized)
-- **API**: Llama 3.1 405B (405B params via Hyperbolic)
-- Rich interconnection patterns (~14 connections for 8-neuron, ~656 for 64-neuron)
+- **API**: Llama 3.1 405B (Hyperbolic) or Gemini 2.0 Flash (Google)
+- Rich interconnection patterns (14 → 656 → 2000+ connections)
 
 🌐 **Global Workspace Theory (GWT)**
 - Competitive selection for conscious processing
@@ -60,7 +61,9 @@ The system creates emergent intelligent behavior aligned with cognitive science 
 📊 **Philosophy Test Suite**
 - **40-Question Test**: 8 complexity levels testing philosophical reasoning
 - **100-Question Expanded Test**: 10 levels from foundational concepts to cutting-edge philosophy
+- **Deep Reasoning Test**: 2 extremely complex multi-part questions with 5-step reasoning
 - Comprehensive evaluation of reasoning, creativity, synthesis, and meta-cognition
+- Consciousness scoring: 0.0-1.0 scale measuring network integration
 
 ## Architecture
 
@@ -155,6 +158,67 @@ The system creates emergent intelligent behavior aligned with cognitive science 
 │  Performance | Control | Awareness | Regulation       │
 │                                                        │
 │  656 Connections | Rich Feedback Loops | Skip Paths   │
+└────────────────────────────────────────────────────────┘
+```
+
+### 128-Neuron Ultra-Dense Architecture
+
+```
+┌────────────────────────────────────────────────────────┐
+│    LLM-SWARM-BRAIN (128-NEURON ULTRA-DENSE)            │
+│         Gemini 2.0 Flash or Llama 405B                 │
+├────────────────────────────────────────────────────────┤
+│                                                        │
+│  LAYER 1-2: PERCEPTION (16 neurons)                    │
+│  Visual | Auditory | Semantic | Pattern | Context     │
+│  Temporal | Spatial | Abstract | Symbolic | Relational│
+│  Structural | Dynamic | Hierarchical | Emergent       │
+│  Holistic | Granular                                  │
+│                    ↓                                   │
+│  LAYER 3-4: ATTENTION (16 neurons)                     │
+│  Selective | Sustained | Divided | Salience           │
+│  Relevance | Priority | Focus | Switching             │
+│  Vigilance | Alertness | Suppression | Novelty        │
+│  Importance | Allocation | Load Mgmt | Blink          │
+│                    ↓                                   │
+│  LAYER 5-6: MEMORY (16 neurons)                        │
+│  Short-term | Working | Episodic | Semantic           │
+│  Procedural | Associative | Consolidation | Retrieval │
+│  Autobiographical | Prospective | Implicit | Explicit │
+│  Encoding | Storage | Reconsolidation | Interference  │
+│                    ↓                                   │
+│  LAYER 7-8: REASONING (16 neurons)                     │
+│  Deductive | Inductive | Abductive | Analogical       │
+│  Causal | Probabilistic | Logical | Counterfactual    │
+│  Modal | Temporal | Spatial | Mathematical            │
+│  Ethical | Practical | Theoretical | Dialectical      │
+│                    ↓                                   │
+│  LAYER 9-10: CREATIVE (16 neurons)                     │
+│  Divergent | Blending | Metaphor | Novel              │
+│  Lateral | Imaginative | Innovation | Constraint      │
+│  Artistic | Generative | Transformative | Exploratory │
+│  Playful | Serendipity | Incubation | Insight         │
+│                    ↓                                   │
+│  LAYER 11-12: ANALYTICAL (16 neurons)                  │
+│  Quantitative | Qualitative | Comparative | Critical  │
+│  Decomposition | Hypothesis | Evidence | Uncertainty  │
+│  Statistical | Logical | Structural | Functional      │
+│  Cost-Benefit | Risk | Validity | Consistency         │
+│                    ↓                                   │
+│  LAYER 13-14: SYNTHESIS (16 neurons)                   │
+│  Integration | Coherence | Conflict | Perspective     │
+│  Holistic | Output | Narrative | Solution             │
+│  Theory | Model | Framework | Principle               │
+│  Generalization | Abstraction | Concretization        │
+│                    ↓                                   │
+│  LAYER 15-16: META-COGNITIVE (16 neurons)              │
+│  Monitoring | Error | Confidence | Strategy           │
+│  Performance | Control | Awareness | Regulation       │
+│  Goal Mgmt | Planning | Decision | Judgment           │
+│  Reflection | Introspection | Correction | Learning   │
+│                                                        │
+│  2000+ Connections | Deep Integration | Meta-Awareness │
+│  Expected Consciousness: 0.70-0.85                    │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -270,13 +334,16 @@ result = brain.think("Explain quantum entanglement")
 python expanded_inference_test_philosophy.py --quick
 
 # Full 100-question test with API (8-neuron)
-python expanded_inference_test_philosophy.py --use-api
+python expanded_inference_test_philosophy.py --use-api --api-provider gemini
 
 # Full 100-question test with 64-neuron architecture
-python expanded_inference_test_philosophy.py --use-api --use-64-neurons
+python expanded_inference_test_philosophy.py --use-api --api-provider gemini --use-64-neurons
 
 # Sample test (30 questions)
-python expanded_inference_test_philosophy.py --use-api --sample
+python expanded_inference_test_philosophy.py --use-api --api-provider gemini --sample
+
+# Deep reasoning test (2 complex questions, 128 neurons, 5 steps)
+python deep_reasoning_test.py --neurons 128 --api-provider gemini --max-steps 5
 ```
 
 ## Examples

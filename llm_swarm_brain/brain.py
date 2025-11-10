@@ -31,12 +31,18 @@ from llm_swarm_brain.config import (
     DEFAULT_CONNECTIONS
 )
 
-# Support for 64-neuron config
+# Support for 64-neuron and 128-neuron configs
 try:
     from llm_swarm_brain import config_64
     HAS_64_CONFIG = True
 except ImportError:
     HAS_64_CONFIG = False
+
+try:
+    from llm_swarm_brain import config_128
+    HAS_128_CONFIG = True
+except ImportError:
+    HAS_128_CONFIG = False
 from llm_swarm_brain.utils import CircularBuffer, calculate_phi
 
 
@@ -270,12 +276,14 @@ class PhiBrain:
                     
                     if self.use_api:
                         if self.api_provider == "gemini":
+                            # Support custom model names or use default
+                            gemini_model = getattr(self.config, 'gemini_model_name', None) or "gemini-exp-1206"
                             neuron = GeminiNeuron(
                                 role=role,
                                 gpu_id=gpu_id,
                                 neuron_id=neuron_id,
                                 activation_threshold=self.config.activation_threshold,
-                                model_name="gemini-2.0-flash-exp",  # Latest Gemini model
+                                model_name=gemini_model,
                                 max_tokens=self.config.max_tokens,
                                 temperature=self.config.temperature,
                                 api_key=self.api_key
