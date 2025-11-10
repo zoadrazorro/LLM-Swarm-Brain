@@ -1,0 +1,201 @@
+{
+  "training_summary": {
+    "total_questions": 15,
+    "total_levels": 3,
+    "total_duration_minutes": 40.521452716666666
+  },
+  "performance_metrics": {
+    "overall_avg_consciousness": 0.6474871793023326,
+    "overall_avg_integration": 0.9156116770551714,
+    "overall_avg_coherence": 0.0,
+    "peak_consciousness": 0.6567394069757806,
+    "peak_integration": 1.0,
+    "peak_coherence": 0.0
+  },
+  "learning_progression": {
+    "first_5_avg_consciousness": 0.6289827239554356,
+    "last_5_avg_consciousness": 0.6567394069757806,
+    "improvement_percentage": 4.412948394797494,
+    "consciousness_trend": "improving"
+  },
+  "persistent_memory": {
+    "lifetime_training_time_minutes": 40.521452716666666,
+    "lifetime_questions_processed": 15,
+    "lifetime_best_performance": {
+      "consciousness": 0.6567394069757806,
+      "integration": 0.9278860221387673,
+      "coherence": 0.0
+    },
+    "total_training_sessions": 3
+  },
+  "level_performance": [
+    {
+      "level_name": "level_1_warmup",
+      "level_info": {
+        "name": "Warm-up (Simple Concepts)",
+        "complexity": 0.2,
+        "expected_duration": "1-2 min",
+        "questions": [
+          "What is the difference between knowledge and belief?",
+          "Explain the concept of causation in simple terms.",
+          "What does it mean for something to be 'true'?",
+          "Define consciousness in one sentence.",
+          "What is the mind-body problem?"
+        ]
+      },
+      "questions": [
+        {
+          "question": "What is the difference between knowledge and belief?",
+          "consciousness": 0.5179559918740557,
+          "integration": 1.0,
+          "coherence": 0.0,
+          "duration": 152.58353
+        },
+        {
+          "question": "Explain the concept of causation in simple terms.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 136.862424
+        },
+        {
+          "question": "What does it mean for something to be 'true'?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 171.368417
+        },
+        {
+          "question": "Define consciousness in one sentence.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 108.145348
+        },
+        {
+          "question": "What is the mind-body problem?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 181.462182
+        }
+      ],
+      "avg_consciousness": 0.6289827239554356,
+      "avg_integration": 0.9278860221387673,
+      "avg_coherence": 0.0,
+      "total_duration": 750.421901
+    },
+    {
+      "level_name": "level_2_foundation",
+      "level_info": {
+        "name": "Foundation (Basic Reasoning)",
+        "complexity": 0.4,
+        "expected_duration": "2-4 min",
+        "questions": [
+          "How does Descartes' 'I think, therefore I am' establish certainty?",
+          "What is the difference between deductive and inductive reasoning?",
+          "Explain Plato's allegory of the cave and its meaning.",
+          "What is the problem of induction as described by Hume?",
+          "How does Kant distinguish between phenomena and noumena?"
+        ]
+      },
+      "questions": [
+        {
+          "question": "How does Descartes' 'I think, therefore I am' establish certainty?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 178.998058
+        },
+        {
+          "question": "What is the difference between deductive and inductive reasoning?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 164.948999
+        },
+        {
+          "question": "Explain Plato's allegory of the cave and its meaning.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 204.972456
+        },
+        {
+          "question": "What is the problem of induction as described by Hume?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 103.177754
+        },
+        {
+          "question": "How does Kant distinguish between phenomena and noumena?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 109.737315
+        }
+      ],
+      "avg_consciousness": 0.6567394069757806,
+      "avg_integration": 0.9098575276734591,
+      "avg_coherence": 0.0,
+      "total_duration": 761.834582
+    },
+    {
+      "level_name": "level_3_intermediate",
+      "level_info": {
+        "name": "Intermediate (Pattern Recognition)",
+        "complexity": 0.6,
+        "expected_duration": "4-8 min",
+        "questions": [
+          "Compare and contrast rationalism and empiricism. What are the strengths and weaknesses of each?",
+          "How does the Ship of Theseus paradox challenge our understanding of identity?",
+          "Explain the Chinese Room argument and what it suggests about artificial intelligence.",
+          "What is the hard problem of consciousness and why is it considered 'hard'?",
+          "How does compatibilism attempt to reconcile free will and determinism?"
+        ]
+      },
+      "questions": [
+        {
+          "question": "Compare and contrast rationalism and empiricism. What are the strengths and weaknesses of each?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 145.926778
+        },
+        {
+          "question": "How does the Ship of Theseus paradox challenge our understanding of identity?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 200.099581
+        },
+        {
+          "question": "Explain the Chinese Room argument and what it suggests about artificial intelligence.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9060272960726025,
+          "coherence": 0.0,
+          "duration": 168.060486
+        },
+        {
+          "question": "What is the hard problem of consciousness and why is it considered 'hard'?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 228.901561
+        },
+        {
+          "question": "How does compatibilism attempt to reconcile free will and determinism?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 176.042274
+        }
+      ],
+      "avg_consciousness": 0.6567394069757806,
+      "avg_integration": 0.9090914813532878,
+      "avg_coherence": 0.0,
+      "total_duration": 919.03068
+    }
+  ]
+}
