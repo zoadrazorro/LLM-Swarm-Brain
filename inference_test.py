@@ -213,11 +213,16 @@ def run_inference_test(load_models=False, max_questions_per_level=None):
             
             try:
                 # Process through brain
+                # Use fewer steps for quick tests to reduce processing time
+                steps = 2 if max_questions_per_level == 1 else 4
+                # Disable enhancements in quick mode - they add overhead without models
+                enable_enhancements = max_questions_per_level != 1
                 result = brain.think(
                     input_text=question,
-                    max_steps=4,
+                    max_steps=steps,
                     use_memory=True,
-                    use_global_workspace=True
+                    use_global_workspace=True,
+                    enable_enhancements=enable_enhancements
                 )
                 
                 # Analyze response
