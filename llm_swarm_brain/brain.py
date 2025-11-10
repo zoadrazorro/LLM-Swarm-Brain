@@ -252,6 +252,9 @@ class PhiBrain:
                 for role in roles:
                     neuron_id = f"n{gpu_id}_{layer_name}_{role.value}"
                     
+                    # Get role prompt
+                    role_prompt = self._role_prompts.get(role, f"You are a {role.value} expert.")
+                    
                     if self.use_api:
                         neuron = APINeuron(
                             role=role,
@@ -263,6 +266,8 @@ class PhiBrain:
                             temperature=self.config.temperature,
                             api_key=self.api_key
                         )
+                        # Override role prompt for API neuron
+                        neuron._role_prompt = role_prompt
                     else:
                         neuron = Phi3Neuron(
                             role=role,
@@ -274,6 +279,8 @@ class PhiBrain:
                             temperature=self.config.temperature,
                             load_model=self.load_models
                         )
+                        # Override role prompt for local neuron
+                        neuron._role_prompt = role_prompt
 
                     self.orchestrator.add_neuron(neuron)
 

@@ -111,10 +111,13 @@ class Phi3Neuron:
         self.tokenizer = None
         self.device = f"cuda:{gpu_id}" if torch.cuda.is_available() else "cpu"
 
+        # Role prompt (can be overridden by brain)
+        self._role_prompt = ROLE_PROMPTS.get(self.role, f"You are a {self.role.value} expert.")
+        
         # Embedding manager for activation calculation
         self.embedding_manager = EmbeddingManager(device="cpu")  # Use CPU for embeddings
         self.role_embedding = self.embedding_manager.generate_embedding(
-            ROLE_PROMPTS[self.role]
+            self._role_prompt
         )
 
         if load_model:
@@ -236,7 +239,7 @@ class Phi3Neuron:
             ]
 
             context = format_neuron_context(
-                role=ROLE_PROMPTS[self.role],
+                role=self._role_prompt,
                 input_signal=input_signal.content,
                 prior_signals=prior_signals,
                 global_context=global_context
@@ -283,7 +286,7 @@ class Phi3Neuron:
 
         # Format prompt for Phi-3
         messages = [
-            {"role": "system", "content": ROLE_PROMPTS[self.role]},
+            {"role": "system", "content": self._role_prompt},
             {"role": "user", "content": prompt}
         ]
 

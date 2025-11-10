@@ -13,7 +13,7 @@ import logging
 import os
 from dotenv import load_dotenv
 
-from llm_swarm_brain.config import NeuronRole, ROLE_PROMPTS
+from llm_swarm_brain.config import NeuronRole
 from llm_swarm_brain.utils import (
     format_neuron_context,
     CircularBuffer,
@@ -114,6 +114,9 @@ class APINeuron:
         self.total_api_calls: int = 0
         self.total_api_errors: int = 0
         
+        # Role prompt (can be overridden by brain)
+        self._role_prompt = f"You are a {self.role.value} expert."
+        
         logger.info(f"Initialized {neuron_id} (API-based, role={role.value})")
 
     @property
@@ -193,7 +196,7 @@ class APINeuron:
             ]
             
             context = format_neuron_context(
-                role=ROLE_PROMPTS[self.role],
+                role=self._role_prompt,
                 input_signal=input_signal.content,
                 prior_signals=prior_signals,
                 global_context=global_context
@@ -241,7 +244,7 @@ class APINeuron:
             
             # Format messages for API
             messages = [
-                {"role": "system", "content": ROLE_PROMPTS[self.role]},
+                {"role": "system", "content": self._role_prompt},
                 {"role": "user", "content": prompt}
             ]
             
