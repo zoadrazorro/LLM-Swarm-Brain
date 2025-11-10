@@ -19,10 +19,11 @@ import argparse
 import json
 import logging
 import os
+import pickle
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -139,12 +140,15 @@ class NetworkTrainer:
         brain: PhiBrain,
         curriculum: TrainingCurriculum,
         save_checkpoints: bool = True,
-        checkpoint_dir: str = "training_checkpoints"
+        checkpoint_dir: str = "training_checkpoints",
+        memory_file: str = "training_memory.pkl",
+        load_memory: bool = True
     ):
         self.brain = brain
         self.curriculum = curriculum
         self.save_checkpoints = save_checkpoints
         self.checkpoint_dir = Path(checkpoint_dir)
+        self.memory_file = self.checkpoint_dir / memory_file
         
         # Create checkpoint directory
         if self.save_checkpoints:
@@ -157,8 +161,27 @@ class NetworkTrainer:
             "consciousness_progression": [],
             "integration_progression": [],
             "coherence_progression": [],
-            "connection_strengths": []
+            "connection_strengths": [],
+            "training_sessions": []
         }
+        
+        # Persistent memory
+        self.persistent_memory = {
+            "total_training_time": 0.0,
+            "total_questions_processed": 0,
+            "connection_evolution": {},
+            "best_performance": {
+                "consciousness": 0.0,
+                "integration": 0.0,
+                "coherence": 0.0
+            },
+            "learned_patterns": [],
+            "session_history": []
+        }
+        
+        # Load previous memory if exists
+        if load_memory:
+            self._load_memory()
     
     def train_level(
         self,
@@ -247,6 +270,9 @@ class NetworkTrainer:
         # Store level results
         self.training_history["levels"].append(level_results)
         
+        # Update persistent memory
+        self._update_persistent_memory(level_results)
+        
         # Save checkpoint
         if save_after_level and self.save_checkpoints:
             self._save_checkpoint(level_name)
@@ -288,6 +314,71 @@ class NetworkTrainer:
         
         return report
     
+    def _load_memory(self):
+        """Load persistent memory from previous training sessions"""
+        if self.memory_file.exists():
+            try:
+                with open(self.memory_file, 'rb') as f:
+                    loaded_memory = pickle.load(f)
+                    self.persistent_memory.update(loaded_memory)
+                
+                logger.info(f"✓ Loaded persistent memory from {self.memory_file}")
+                logger.info(f"  Previous training time: {self.persistent_memory['total_training_time']/60:.1f} minutes")
+                logger.info(f"  Previous questions: {self.persistent_memory['total_questions_processed']}")
+                logger.info(f"  Previous sessions: {len(self.persistent_memory['session_history'])}")
+                logger.info(f"  Best consciousness: {self.persistent_memory['best_performance']['consciousness']:.3f}")
+            except Exception as e:
+                logger.warning(f"Could not load memory: {e}. Starting fresh.")
+        else:
+            logger.info("No previous memory found. Starting fresh training.")
+    
+    def _save_memory(self):
+        """Save persistent memory for future sessions"""
+        try:
+            with open(self.memory_file, 'wb') as f:
+                pickle.dump(self.persistent_memory, f)
+            logger.info(f"✓ Persistent memory saved to {self.memory_file}")
+        except Exception as e:
+            logger.error(f"Failed to save memory: {e}")
+    
+    def _update_persistent_memory(self, level_results: Dict):
+        """Update persistent memory with new training data"""
+        # Update totals
+        self.persistent_memory["total_training_time"] += level_results["total_duration"]
+        self.persistent_memory["total_questions_processed"] += len(level_results["questions"])
+        
+        # Update best performance
+        if level_results["avg_consciousness"] > self.persistent_memory["best_performance"]["consciousness"]:
+            self.persistent_memory["best_performance"]["consciousness"] = level_results["avg_consciousness"]
+        if level_results["avg_integration"] > self.persistent_memory["best_performance"]["integration"]:
+            self.persistent_memory["best_performance"]["integration"] = level_results["avg_integration"]
+        if level_results["avg_coherence"] > self.persistent_memory["best_performance"]["coherence"]:
+            self.persistent_memory["best_performance"]["coherence"] = level_results["avg_coherence"]
+        
+        # Track connection evolution (if available)
+        if hasattr(self.brain, 'neurons'):
+            connection_snapshot = {}
+            for neuron in self.brain.neurons[:10]:  # Sample first 10 neurons
+                neuron_connections = {}
+                for conn in neuron.connections[:5]:  # Sample first 5 connections
+                    target_id = conn.target_neuron.neuron_id if hasattr(conn, 'target_neuron') else 'unknown'
+                    neuron_connections[target_id] = conn.weight
+                connection_snapshot[neuron.neuron_id] = neuron_connections
+            
+            timestamp = datetime.now().isoformat()
+            self.persistent_memory["connection_evolution"][timestamp] = connection_snapshot
+        
+        # Add to session history
+        session_entry = {
+            "timestamp": datetime.now().isoformat(),
+            "level": level_results["level_name"],
+            "avg_consciousness": level_results["avg_consciousness"],
+            "avg_integration": level_results["avg_integration"],
+            "avg_coherence": level_results["avg_coherence"],
+            "questions_count": len(level_results["questions"])
+        }
+        self.persistent_memory["session_history"].append(session_entry)
+    
     def _save_checkpoint(self, level_name: str):
         """Save training checkpoint"""
         checkpoint_file = self.checkpoint_dir / f"checkpoint_{level_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
@@ -296,6 +387,11 @@ class NetworkTrainer:
             "level": level_name,
             "timestamp": datetime.now().isoformat(),
             "training_history": self.training_history,
+            "persistent_memory_summary": {
+                "total_training_time": self.persistent_memory["total_training_time"],
+                "total_questions": self.persistent_memory["total_questions_processed"],
+                "best_performance": self.persistent_memory["best_performance"]
+            },
             "brain_metrics": self.brain._get_metrics() if hasattr(self.brain, '_get_metrics') else {}
         }
         
@@ -303,6 +399,9 @@ class NetworkTrainer:
             json.dump(checkpoint_data, f, indent=2)
         
         logger.info(f"Checkpoint saved: {checkpoint_file}")
+        
+        # Save persistent memory
+        self._save_memory()
     
     def _save_final_results(self, report: Dict):
         """Save final training results"""
@@ -349,6 +448,13 @@ class NetworkTrainer:
                 "improvement_percentage": improvement,
                 "consciousness_trend": "improving" if improvement > 0 else "stable" if improvement == 0 else "declining"
             },
+            "persistent_memory": {
+                "lifetime_training_time_minutes": self.persistent_memory["total_training_time"] / 60,
+                "lifetime_questions_processed": self.persistent_memory["total_questions_processed"],
+                "lifetime_best_performance": self.persistent_memory["best_performance"],
+                "total_training_sessions": len(self.persistent_memory["session_history"]),
+                "connection_evolution_snapshots": len(self.persistent_memory["connection_evolution"])
+            },
             "level_performance": self.training_history["levels"],
             "full_history": self.training_history
         }
@@ -365,7 +471,17 @@ class NetworkTrainer:
         logger.info(f"  Last 5 Questions: {report['learning_progression']['last_5_avg_consciousness']:.3f}")
         logger.info(f"  Improvement: {report['learning_progression']['improvement_percentage']:.1f}%")
         logger.info(f"  Trend: {report['learning_progression']['consciousness_trend']}")
+        logger.info(f"\nPersistent Memory (Lifetime Stats):")
+        logger.info(f"  Total Training Time: {report['persistent_memory']['lifetime_training_time_minutes']:.1f} minutes")
+        logger.info(f"  Total Questions: {report['persistent_memory']['lifetime_questions_processed']}")
+        logger.info(f"  Training Sessions: {report['persistent_memory']['total_training_sessions']}")
+        logger.info(f"  Best Consciousness: {report['persistent_memory']['lifetime_best_performance']['consciousness']:.3f}")
+        logger.info(f"  Best Integration: {report['persistent_memory']['lifetime_best_performance']['integration']:.3f}")
+        logger.info(f"  Best Coherence: {report['persistent_memory']['lifetime_best_performance']['coherence']:.3f}")
         logger.info(f"\n{'#'*80}\n")
+        
+        # Save final persistent memory
+        self._save_memory()
         
         return report
 
@@ -381,6 +497,8 @@ def main():
     parser.add_argument("--start-level", type=str, help="Start from specific level (e.g., level_3_intermediate)")
     parser.add_argument("--single-level", type=str, help="Train only on a single level")
     parser.add_argument("--no-checkpoints", action="store_true", help="Disable checkpoint saving")
+    parser.add_argument("--no-memory", action="store_true", help="Don't load/save persistent memory")
+    parser.add_argument("--reset-memory", action="store_true", help="Reset persistent memory (start fresh)")
     parser.add_argument("--api-key", type=str, help="API key (or use environment variable)")
     
     args = parser.parse_args()
@@ -425,13 +543,22 @@ def main():
         )
         logger.info("✓ Brain initialized\n")
         
+        # Handle memory reset if requested
+        memory_dir = Path("training_checkpoints")
+        memory_file = memory_dir / "training_memory.pkl"
+        if args.reset_memory and memory_file.exists():
+            logger.info("[2] Resetting persistent memory...")
+            memory_file.unlink()
+            logger.info("✓ Memory reset complete\n")
+        
         # Initialize curriculum and trainer
-        logger.info("[2] Loading training curriculum...")
+        logger.info("[3] Loading training curriculum...")
         curriculum = TrainingCurriculum()
         trainer = NetworkTrainer(
             brain=brain,
             curriculum=curriculum,
-            save_checkpoints=not args.no_checkpoints
+            save_checkpoints=not args.no_checkpoints,
+            load_memory=not args.no_memory
         )
         logger.info(f"✓ Curriculum loaded ({curriculum.get_total_questions()} questions)\n")
         
