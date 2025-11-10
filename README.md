@@ -7,13 +7,15 @@
 
 ## Overview
 
-LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act as neurons** in a neural network. Using 16 Phi-3-mini models distributed across 2 GPUs, it creates an emergent intelligent system aligned with cognitive science theories.
+LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act as neurons** in a neural network. Using 64 Phi-3-medium models distributed across 8 H100 GPUs, it creates an emergent intelligent system aligned with cognitive science theories.
 
 ### Key Features
 
-🧠 **16 Specialized Phi-3 Neurons**
-- Distributed across 2× AMD Radeon 7900 XT GPUs
+🧠 **64 Specialized Phi-3 Neurons**
+- Distributed across 8× NVIDIA H100 SXM5 GPUs (80GB each)
+- 4× scale-up from original architecture
 - Each neuron has a specific cognitive role
+- Uses Phi-3-Medium model (upgraded from Mini)
 - 4-bit quantization for memory efficiency
 
 🌐 **Global Workspace Theory (GWT)**
@@ -48,49 +50,78 @@ LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act 
 - **Meta-Orchestration**: Dynamically adjusts activation thresholds based on task complexity
 - **Coherence Check-ins**: Explicit prompts asking "Does this contradict anything?"
 
-## Architecture
+## Architecture (8× H100 SXM5 80GB)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      LLM-SWARM-BRAIN                        │
+│               LLM-SWARM-BRAIN (64 NEURONS)                  │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  GPU 0: Perception & Memory Layer (8 neurons)               │
-│  ┌──────────────┐  ┌──────────────┐                        │
-│  │ Perception   │  │   Memory     │                         │
-│  │ • Visual     │  │ • Short-term │                         │
-│  │ • Semantic   │  │ • Episodic   │                         │
-│  │ • Pattern    │  │ • Semantic   │                         │
-│  │ • Anomaly    │  │ • Working    │                         │
-│  └──────┬───────┘  └──────┬───────┘                         │
-│         │                 │                                 │
-│         └────────┬────────┘                                 │
-│                  │                                          │
-│                  ▼                                          │
+│  GPU 0-1: PERCEPTION LAYER (16 neurons)                     │
+│  ┌──────────────────┐  ┌──────────────────┐               │
+│  │  Specialized     │  │   Sensory        │               │
+│  │  Perception (8)  │  │ Integration (8)  │               │
+│  │  • Visual        │  │ • Multi-sensory  │               │
+│  │  • Auditory      │  │ • Feature Bind   │               │
+│  │  • Semantic      │  │ • Grouping       │               │
+│  │  • Spatial       │  │ • Attention      │               │
+│  │  • Temporal      │  │ • Saliency       │               │
+│  │  • Pattern       │  │ • Prediction     │               │
+│  │  • Anomaly       │  │ • Gating         │               │
+│  │  • Context       │  │ • Coherence      │               │
+│  └────────┬─────────┘  └────────┬─────────┘               │
+│           │                     │                          │
+│           └──────────┬──────────┘                          │
+│                      ▼                                     │
+│  GPU 2-3: MEMORY LAYER (16 neurons, 4× redundancy)         │
+│  ┌──────────────────┐  ┌──────────────────┐               │
+│  │ Short-term  (4)  │  │ Working     (4)  │               │
+│  │ Episodic    (4)  │  │ Semantic    (4)  │               │
+│  └────────┬─────────┘  └────────┬─────────┘               │
+│           │                     │                          │
+│           └──────────┬──────────┘                          │
+│                      ▼                                     │
 │  ┌─────────────────────────────────┐                       │
 │  │   GLOBAL WORKSPACE (GWT)        │                       │
-│  │   • Competition & Broadcasting  │                       │
+│  │   • 10 Broadcast Slots          │                       │
 │  │   • Consciousness Monitoring    │                       │
-│  │   • Attention Mechanism         │                       │
+│  │   • Attention Windowing         │                       │
 │  └──────────────┬──────────────────┘                       │
-│                  │                                          │
-│                  ▼                                          │
+│                 ▼                                          │
 │  ┌─────────────────────────────────┐                       │
 │  │ POSITRONIC FRAMEWORK            │                       │
 │  │ • Dialectical Reasoning         │                       │
-│  │ • Coherence Validation          │                       │
-│  │ • Logic Gate Processing         │                       │
+│  │ • Coherence Check-ins           │                       │
+│  │ • Summarization                 │                       │
 │  └──────────────┬──────────────────┘                       │
-│                  │                                          │
-│                  ▼                                          │
-│  GPU 1: Reasoning & Action Layer (8 neurons)                │
-│  ┌──────────────┐  ┌──────────────┐                        │
-│  │  Reasoning   │  │    Action    │                         │
-│  │ • Logical    │  │ • Planning   │                         │
-│  │ • Creative   │  │ • Decision   │                         │
-│  │ • Causal     │  │ • Synthesis  │                         │
-│  │ • Hypothesis │  │ • Critique   │                         │
-│  └──────────────┘  └──────────────┘                         │
+│                 ▼                                          │
+│  GPU 4-5: REASONING LAYER (16 neurons)                      │
+│  ┌──────────────────┐  ┌──────────────────┐               │
+│  │  Core (8)        │  │  Advanced (8)    │               │
+│  │  • Logical       │  │ • Analogical     │               │
+│  │  • Deductive     │  │ • Probabilistic  │               │
+│  │  • Inductive     │  │ • Hypothesis Gen │               │
+│  │  • Abductive     │  │ • Hypothesis Test│               │
+│  │  • Creative      │  │ • Inference      │               │
+│  │  • Lateral       │  │ • Belief Update  │               │
+│  │  • Causal        │  │ • Uncertainty    │               │
+│  │  • Counterfactual│  │ • Concept Blend  │               │
+│  └────────┬─────────┘  └────────┬─────────┘               │
+│           │                     │                          │
+│           └──────────┬──────────┘                          │
+│                      ▼                                     │
+│  GPU 6-7: ACTION/META LAYER (16 neurons)                    │
+│  ┌──────────────────┐  ┌──────────────────┐               │
+│  │  Action/Dec (8)  │  │  Meta-Cog (8)    │               │
+│  │  • Action Plan   │  │ • Self-Critique  │               │
+│  │  • Hierarchical  │  │ • Error Detect   │               │
+│  │  • Decision      │  │ • Error Correct  │               │
+│  │  • Multi-Crit    │  │ • Confidence     │               │
+│  │  • Synthesis     │  │ • Meta-Learning  │               │
+│  │  • Response Gen  │  │ • Strategy Sel   │               │
+│  │  • Goal Mgmt     │  │ • Perf Monitor   │               │
+│  │  • Exec Monitor  │  │ • Cog Control    │               │
+│  └──────────────────┘  └──────────────────┘               │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -100,9 +131,9 @@ LLM-Swarm-Brain implements a cognitive architecture where **individual LLMs act 
 ### Requirements
 
 - Python 3.9+
-- 2× AMD Radeon 7900 XT GPUs (24 GB VRAM each) or equivalent
-- CUDA/ROCm support
-- ~50 GB disk space (for models)
+- **8× NVIDIA H100 SXM5 GPUs (80 GB VRAM each)** or equivalent
+- CUDA 12.0+ support
+- ~100 GB disk space (for Phi-3-Medium models × 64)
 
 ### Setup
 
@@ -279,19 +310,22 @@ config = BrainConfig(
 )
 ```
 
-## Performance
+## Performance (8× H100 SXM5 Configuration)
 
 ### Resource Usage
 
-- **GPU 0**: 8 neurons × ~3 GB = 24 GB VRAM
-- **GPU 1**: 8 neurons × ~3 GB = 24 GB VRAM
-- **System RAM**: ~4-8 GB (embeddings, context, queues)
+- **GPU 0-1** (Perception): 16 neurons × ~4 GB = ~64 GB VRAM
+- **GPU 2-3** (Memory): 16 neurons × ~4 GB = ~64 GB VRAM
+- **GPU 4-5** (Reasoning): 16 neurons × ~4 GB = ~64 GB VRAM
+- **GPU 6-7** (Action/Meta): 16 neurons × ~4 GB = ~64 GB VRAM
+- **System RAM**: ~16-32 GB (embeddings, context, queues, conceptual tracking)
 
 ### Throughput
 
-- **Per neuron**: 50-100 tokens/sec
-- **Parallel processing**: All 16 neurons run simultaneously
-- **End-to-end latency**: 1-3 seconds (depends on activation pattern)
+- **Per neuron**: 100-200 tokens/sec (Phi-3-Medium on H100)
+- **Parallel processing**: All 64 neurons run simultaneously
+- **End-to-end latency**: 1-3 seconds (depends on activation pattern and task complexity)
+- **Max propagation depth**: 6 layers (up from 4)
 
 ## Documentation
 

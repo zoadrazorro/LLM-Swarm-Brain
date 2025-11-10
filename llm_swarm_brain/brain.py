@@ -197,58 +197,54 @@ class PhiBrain:
         logger.info("PhiBrain initialized successfully with all enhancements")
 
     def _initialize_neurons(self):
-        """Initialize all 16 neurons according to architecture"""
+        """Initialize all 64 neurons according to 8-GPU architecture"""
         neuron_count = 0
 
-        # GPU 0: Perception + Memory layers
-        for layer_name, roles in NEURON_ARCHITECTURE["gpu_0"].items():
-            for role in roles:
-                neuron_id = f"gpu0_{layer_name}_{role.value}"
-                neuron = Phi3Neuron(
-                    role=role,
-                    gpu_id=0,
-                    neuron_id=neuron_id,
-                    activation_threshold=self.config.activation_threshold,
-                    model_name=self.config.model_name,
-                    max_tokens=self.config.max_tokens,
-                    temperature=self.config.temperature,
-                    load_model=self.load_models
-                )
+        # Iterate through all 8 GPUs
+        for gpu_id in range(self.config.gpu_count):
+            gpu_key = f"gpu_{gpu_id}"
 
-                self.orchestrator.add_neuron(neuron)
+            if gpu_key not in NEURON_ARCHITECTURE:
+                continue
 
-                if layer_name == "perception":
-                    self.perception_neurons.append(neuron)
-                else:  # memory
-                    self.memory_neurons.append(neuron)
+            # Get layers for this GPU
+            layers = NEURON_ARCHITECTURE[gpu_key]
 
-                neuron_count += 1
+            for layer_name, roles in layers.items():
+                for role in roles:
+                    neuron_id = f"gpu{gpu_id}_{layer_name}_{role.value}"
+                    neuron = Phi3Neuron(
+                        role=role,
+                        gpu_id=gpu_id,
+                        neuron_id=neuron_id,
+                        activation_threshold=self.config.activation_threshold,
+                        model_name=self.config.model_name,
+                        max_tokens=self.config.max_tokens,
+                        temperature=self.config.temperature,
+                        load_model=self.load_models
+                    )
 
-        # GPU 1: Reasoning + Action layers
-        for layer_name, roles in NEURON_ARCHITECTURE["gpu_1"].items():
-            for role in roles:
-                neuron_id = f"gpu1_{layer_name}_{role.value}"
-                neuron = Phi3Neuron(
-                    role=role,
-                    gpu_id=1,
-                    neuron_id=neuron_id,
-                    activation_threshold=self.config.activation_threshold,
-                    model_name=self.config.model_name,
-                    max_tokens=self.config.max_tokens,
-                    temperature=self.config.temperature,
-                    load_model=self.load_models
-                )
+                    self.orchestrator.add_neuron(neuron)
 
-                self.orchestrator.add_neuron(neuron)
+                    # Categorize neurons by layer
+                    if "perception" in layer_name or "sensory" in layer_name:
+                        self.perception_neurons.append(neuron)
+                    elif "memory" in layer_name:
+                        self.memory_neurons.append(neuron)
+                    elif "reasoning" in layer_name:
+                        self.reasoning_neurons.append(neuron)
+                    elif "action" in layer_name or "meta" in layer_name:
+                        self.action_neurons.append(neuron)
 
-                if layer_name == "reasoning":
-                    self.reasoning_neurons.append(neuron)
-                else:  # action
-                    self.action_neurons.append(neuron)
+                    neuron_count += 1
 
-                neuron_count += 1
-
-        logger.info(f"Initialized {neuron_count} neurons across 2 GPUs")
+        logger.info(
+            f"Initialized {neuron_count} neurons across {self.config.gpu_count} GPUs "
+            f"(Perception: {len(self.perception_neurons)}, "
+            f"Memory: {len(self.memory_neurons)}, "
+            f"Reasoning: {len(self.reasoning_neurons)}, "
+            f"Action/Meta: {len(self.action_neurons)})"
+        )
 
     def _setup_network(self):
         """Setup neural connections"""
