@@ -1,13 +1,24 @@
 """
-Advanced Training Script with Stanford Encyclopedia of Philosophy Dataset
-Downloads and trains the neural network on 12K+ philosophy Q&A pairs
+Local Training Script for AMD Radeon RX 7900 XT
+
+Trains PhiBrain using Phi-4 (14B) models via LM Studio on local GPU.
+Optimized for 20GB VRAM with 2 powerful neurons using Q4 quantization.
+
+Phi-4 offers significantly enhanced reasoning capabilities compared to Phi-3.
+
+Usage:
+    python train_local_7900xt.py --questions 100 --max-steps 2
+
+Requirements:
+    - LM Studio running on localhost:1234
+    - Phi-4 model loaded (Q4_K_M quantization, ~8GB)
+    - AMD Radeon RX 7900 XT with 20GB VRAM
 """
 
 import argparse
-import json
 import logging
+import json
 import pickle
-import random
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any
@@ -16,7 +27,7 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 from llm_swarm_brain.brain import PhiBrain
-from llm_swarm_brain.config import BrainConfig
+from config_local_7900xt import LocalBrainConfig
 
 # Setup logging
 logging.basicConfig(
@@ -26,43 +37,46 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class PhilosophyDatasetTrainer:
-    """Trains PhiBrain on Stanford Encyclopedia of Philosophy dataset"""
+class LocalTrainer:
+    """Local training on 7900XT via LM Studio"""
     
     def __init__(
         self,
-        neurons: int = 8,
-        api_provider: str = "hyperbolic",
-        hyperbolic_model: str = "openai/gpt-oss-20b",
         max_steps: int = 2,
-        memory_file: str = "training_checkpoints/training_memory.pkl",
-        checkpoint_dir: str = "training_checkpoints"
+        memory_file: str = "training_checkpoints/training_memory.pkl",  # SHARED with cloud
+        checkpoint_dir: str = "training_checkpoints/local",
+        share_rag_with_cloud: bool = True
     ):
-        self.neurons = neurons
-        self.api_provider = api_provider
-        self.hyperbolic_model = hyperbolic_model
         self.max_steps = max_steps
         self.memory_file = Path(memory_file)
         self.checkpoint_dir = Path(checkpoint_dir)
-        self.checkpoint_dir.mkdir(exist_ok=True)
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self.share_rag_with_cloud = share_rag_with_cloud
         
-        # Initialize brain
-        logger.info(f"Initializing {neurons}-neuron brain...")
+        # Initialize brain for local LM Studio with Phi-4
+        logger.info("Initializing 4-neuron Phi-4 brain for dual-GPU training...")
+        logger.info("GPU 0: 2 neurons | GPU 1: 2 neurons")
+        logger.info("Using LM Studio at http://localhost:1234")
+        logger.info("Model: Phi-4 (14B parameters, enhanced reasoning)")
+        if share_rag_with_cloud:
+            logger.info("RAG Memory: SHARED with cloud training")
         
-        # Create config object
-        config = BrainConfig()
-        if api_provider == "hyperbolic":
-            config.hyperbolic_model_name = hyperbolic_model
+        config = LocalBrainConfig()
         
-        # Initialize brain with API mode
+        # Initialize brain with LM Studio API mode
         self.brain = PhiBrain(
             config,
             use_api=True,
-            use_64_neurons=(neurons == 64),
-            api_provider=api_provider
+            use_64_neurons=False,
+            api_provider="hyperbolic"  # Uses OpenAI-compatible API
         )
         
-        # Load persistent memory if exists
+        # Override API URL for LM Studio
+        for neuron in self.brain.orchestrator.neurons.values():
+            if hasattr(neuron, 'api_url'):
+                neuron.api_url = "http://localhost:1234/v1/chat/completions"
+        
+        # Load persistent memory
         self.memory = self._load_memory()
         
         # Training statistics
@@ -92,7 +106,6 @@ class PhilosophyDatasetTrainer:
             try:
                 with open(self.memory_file, 'rb') as f:
                     memory = pickle.load(f)
-                # Ensure all required keys exist (for backwards compatibility)
                 for key, value in default_memory.items():
                     if key not in memory:
                         memory[key] = value
@@ -106,7 +119,7 @@ class PhilosophyDatasetTrainer:
     def _save_memory(self):
         """Save persistent memory to disk"""
         try:
-            self.memory_file.parent.mkdir(exist_ok=True)
+            self.memory_file.parent.mkdir(parents=True, exist_ok=True)
             with open(self.memory_file, 'wb') as f:
                 pickle.dump(self.memory, f)
             logger.info(f"Memory saved: {len(self.memory['training_history'])} experiences")
@@ -147,6 +160,7 @@ class PhilosophyDatasetTrainer:
             
             # Sample if requested
             if sample_size and sample_size < len(data):
+                import random
                 data = random.sample(data, sample_size)
                 logger.info(f"Sampled {sample_size} questions for training")
             
@@ -156,19 +170,17 @@ class PhilosophyDatasetTrainer:
             logger.error(f"Failed to download dataset: {e}")
             raise
     
-    def train_on_dataset(
-        self,
-        dataset: List[Dict[str, str]],
-        batch_size: int = 10,
-        save_interval: int = 50
-    ):
+    def train(self, dataset: List[Dict[str, str]], batch_size: int = 5, save_interval: int = 20):
         """Train brain on philosophy dataset"""
-        logger.info(f"Starting training on {len(dataset)} questions...")
+        logger.info(f"Starting LOCAL training on {len(dataset)} questions...")
         logger.info(f"Batch size: {batch_size}, Save interval: {save_interval}")
+        logger.info(f"Hardware: 2x AMD Radeon RX 7900 XT (40GB total VRAM)")
+        logger.info(f"Model: Phi-4 (14B, Q4_K_M) - 4 neurons (2 per GPU)")
+        logger.info(f"RAG Sharing: {'ENABLED - syncing with cloud' if self.share_rag_with_cloud else 'DISABLED'}")
         
         start_time = datetime.now()
         
-        for i, item in enumerate(tqdm(dataset, desc="Training")):
+        for i, item in enumerate(tqdm(dataset, desc="Local Training")):
             question = item["question"]
             
             try:
@@ -196,18 +208,25 @@ class PhilosophyDatasetTrainer:
                     metrics={
                         "consciousness": result.get("consciousness_level", 0.0),
                         "integration": result.get("integration_score", 0.0),
-                        "coherence": result.get("coherence_score", 0.0)
+                        "coherence": result.get("coherence_score", 0.0),
+                        "source": "local_dual_gpu"  # Mark as local training
                     }
                 )
+                
+                # Save RAG memory periodically to share with cloud (if enabled)
+                if self.share_rag_with_cloud and (i + 1) % 10 == 0:
+                    self._save_memory()  # Cloud can pick up new experiences
                 
                 # Log progress
                 if (i + 1) % batch_size == 0:
                     avg_consciousness = sum(self.stats["consciousness_scores"][-batch_size:]) / batch_size
                     avg_integration = sum(self.stats["integration_scores"][-batch_size:]) / batch_size
+                    avg_time = self.stats["total_duration"] / self.stats["questions_processed"]
                     logger.info(
                         f"Batch {(i+1)//batch_size}: "
                         f"Consciousness={avg_consciousness:.3f}, "
-                        f"Integration={avg_integration:.3f}"
+                        f"Integration={avg_integration:.3f}, "
+                        f"Avg Time={avg_time:.1f}s/question"
                     )
                 
                 # Save checkpoint
@@ -231,18 +250,17 @@ class PhilosophyDatasetTrainer:
         self._save_memory()
         self._save_final_report()
         
-        logger.info(f"Training complete! Duration: {duration/60:.1f} minutes")
+        logger.info(f"Local training complete! Duration: {duration/60:.1f} minutes")
     
     def _save_checkpoint(self, question_num: int):
         """Save training checkpoint"""
         checkpoint = {
+            "question_num": question_num,
             "timestamp": datetime.now().isoformat(),
-            "questions_processed": question_num,
             "stats": self.stats.copy(),
             "memory_summary": {
                 "total_experiences": len(self.memory["training_history"]),
-                "best_consciousness": self.memory["best_performance"]["consciousness"],
-                "best_integration": self.memory["best_performance"]["integration"]
+                "best_performance": self.memory["best_performance"]
             }
         }
         
@@ -256,85 +274,70 @@ class PhilosophyDatasetTrainer:
     def _save_final_report(self):
         """Save final training report"""
         report = {
-            "timestamp": datetime.now().isoformat(),
-            "configuration": {
-                "neurons": self.neurons,
-                "api_provider": self.api_provider,
-                "model": self.hyperbolic_model,
-                "max_steps": self.max_steps
+            "training_complete": datetime.now().isoformat(),
+            "hardware": "2x AMD Radeon RX 7900 XT (40GB total VRAM)",
+            "model": "Phi-4 (14B, Q4_K_M)",
+            "neurons": 4,
+            "neurons_per_gpu": 2,
+            "rag_shared_with_cloud": self.share_rag_with_cloud,
+            "max_steps": self.max_steps,
+            "total_questions": self.stats["questions_processed"],
+            "total_duration_minutes": self.stats["total_duration"] / 60,
+            "avg_time_per_question": self.stats["total_duration"] / max(self.stats["questions_processed"], 1),
+            "final_metrics": {
+                "avg_consciousness": sum(self.stats["consciousness_scores"]) / max(len(self.stats["consciousness_scores"]), 1),
+                "avg_integration": sum(self.stats["integration_scores"]) / max(len(self.stats["integration_scores"]), 1),
+                "avg_coherence": sum(self.stats["coherence_scores"]) / max(len(self.stats["coherence_scores"]), 1),
             },
-            "statistics": {
-                "questions_processed": self.stats["questions_processed"],
-                "total_duration_minutes": self.stats["total_duration"] / 60,
-                "avg_consciousness": sum(self.stats["consciousness_scores"]) / len(self.stats["consciousness_scores"]) if self.stats["consciousness_scores"] else 0,
-                "avg_integration": sum(self.stats["integration_scores"]) / len(self.stats["integration_scores"]) if self.stats["integration_scores"] else 0,
-                "avg_coherence": sum(self.stats["coherence_scores"]) / len(self.stats["coherence_scores"]) if self.stats["coherence_scores"] else 0,
-                "peak_consciousness": max(self.stats["consciousness_scores"]) if self.stats["consciousness_scores"] else 0,
-                "peak_integration": max(self.stats["integration_scores"]) if self.stats["integration_scores"] else 0
-            },
-            "memory": {
-                "total_experiences": len(self.memory["training_history"]),
-                "lifetime_questions": self.memory["total_questions"],
-                "lifetime_training_time_minutes": self.memory["total_training_time"],
-                "training_sessions": self.memory["training_sessions"],
-                "best_performance": self.memory["best_performance"]
-            }
+            "best_performance": self.memory["best_performance"],
+            "total_training_sessions": self.memory["training_sessions"],
+            "cumulative_questions": self.memory["total_questions"],
+            "cumulative_time_minutes": self.memory["total_training_time"]
         }
         
-        report_file = self.checkpoint_dir / f"philosophy_training_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        report_file = self.checkpoint_dir / f"local_training_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(report_file, 'w') as f:
             json.dump(report, f, indent=2)
         
         logger.info(f"Final report saved: {report_file}")
-        logger.info(f"Average Consciousness: {report['statistics']['avg_consciousness']:.3f}")
-        logger.info(f"Average Integration: {report['statistics']['avg_integration']:.3f}")
-        logger.info(f"Peak Consciousness: {report['statistics']['peak_consciousness']:.3f}")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train PhiBrain on Stanford Encyclopedia of Philosophy dataset")
-    parser.add_argument("--neurons", type=int, default=8, choices=[8, 64], help="Number of neurons (8 or 64)")
-    parser.add_argument("--api-provider", type=str, default="hyperbolic", choices=["hyperbolic", "gemini"], help="API provider")
-    parser.add_argument("--hyperbolic-model", type=str, default="openai/gpt-oss-20b", help="Hyperbolic model name")
-    parser.add_argument("--max-steps", type=int, default=2, help="Max reasoning steps per question")
-    parser.add_argument("--sample-size", type=int, default=None, help="Number of questions to sample (default: all)")
-    parser.add_argument("--batch-size", type=int, default=10, help="Batch size for progress logging")
-    parser.add_argument("--save-interval", type=int, default=50, help="Save checkpoint every N questions")
+    parser = argparse.ArgumentParser(description="Local training on AMD Radeon RX 7900 XT")
+    parser.add_argument("--questions", type=int, default=100, help="Number of questions to train on")
+    parser.add_argument("--max-steps", type=int, default=2, help="Maximum reasoning steps per question")
+    parser.add_argument("--batch-size", type=int, default=5, help="Batch size for progress logging")
+    parser.add_argument("--save-interval", type=int, default=20, help="Save checkpoint every N questions")
     
     args = parser.parse_args()
     
     logger.info("=" * 80)
-    logger.info("PHILOSOPHY DATASET TRAINING")
+    logger.info("LOCAL TRAINING - Dual AMD Radeon RX 7900 XT with Phi-4")
     logger.info("=" * 80)
     logger.info(f"Configuration:")
-    logger.info(f"  Neurons: {args.neurons}")
-    logger.info(f"  API Provider: {args.api_provider}")
-    logger.info(f"  Model: {args.hyperbolic_model}")
+    logger.info(f"  Hardware: 2x AMD Radeon RX 7900 XT (40GB total VRAM)")
+    logger.info(f"  Model: Phi-4 (14B parameters, Q4_K_M)")
+    logger.info(f"  Neurons: 4 (2 per GPU, enhanced reasoning)")
     logger.info(f"  Max Steps: {args.max_steps}")
-    logger.info(f"  Sample Size: {args.sample_size or 'ALL (12K+)'}")
+    logger.info(f"  Questions: {args.questions}")
+    logger.info(f"  LM Studio: http://localhost:1234")
+    logger.info(f"  RAG Sharing: ENABLED (syncs with cloud training)")
     logger.info("=" * 80)
     
     # Initialize trainer
-    trainer = PhilosophyDatasetTrainer(
-        neurons=args.neurons,
-        api_provider=args.api_provider,
-        hyperbolic_model=args.hyperbolic_model,
+    trainer = LocalTrainer(
         max_steps=args.max_steps
     )
     
     # Download dataset
-    dataset = trainer.download_dataset(sample_size=args.sample_size)
+    dataset = trainer.download_dataset(sample_size=args.questions)
     
     # Train
-    trainer.train_on_dataset(
-        dataset=dataset,
+    trainer.train(
+        dataset,
         batch_size=args.batch_size,
         save_interval=args.save_interval
     )
-    
-    logger.info("=" * 80)
-    logger.info("TRAINING COMPLETE!")
-    logger.info("=" * 80)
 
 
 if __name__ == "__main__":

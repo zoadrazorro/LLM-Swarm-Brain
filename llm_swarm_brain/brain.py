@@ -455,11 +455,10 @@ class PhiBrain:
                         self.rag_memory.add_experience(
                             question=f"[Step {step_idx+1}] {input_text[:100]}...",
                             answer=output,
-                            metadata={
+                            metrics={
                                 "neuron_id": neuron_id,
                                 "activation": activation,
-                                "step": step_idx + 1,
-                                "timestamp": datetime.now().isoformat()
+                                "step": step_idx + 1
                             }
                         )
 
