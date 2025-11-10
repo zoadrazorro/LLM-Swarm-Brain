@@ -289,12 +289,14 @@ class PhiBrain:
                                 api_key=self.api_key
                             )
                         else:
+                            # Support custom Hyperbolic model names
+                            hyperbolic_model = getattr(self.config, 'hyperbolic_model_name', None) or self.config.model_name
                             neuron = APINeuron(
                                 role=role,
                                 gpu_id=gpu_id,
                                 neuron_id=neuron_id,
                                 activation_threshold=self.config.activation_threshold,
-                                model_name=self.config.model_name,
+                                model_name=hyperbolic_model,
                                 max_tokens=self.config.max_tokens,
                                 temperature=self.config.temperature,
                                 api_key=self.api_key

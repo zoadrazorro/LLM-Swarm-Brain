@@ -269,6 +269,7 @@ def main():
     parser.add_argument("--api-provider", type=str, default="gemini", choices=["hyperbolic", "gemini"], help="API provider")
     parser.add_argument("--api-key", type=str, help="API key")
     parser.add_argument("--gemini-model", type=str, default="gemini-exp-1206", help="Gemini model name (default: gemini-exp-1206, or use gemini-2.0-flash-exp)")
+    parser.add_argument("--hyperbolic-model", type=str, default="openai/gpt-oss-20b", help="Hyperbolic model name (default: openai/gpt-oss-20b for fast mode, or meta-llama/Meta-Llama-3.1-405B-Instruct)")
     parser.add_argument("--max-steps", type=int, default=5, help="Maximum reasoning steps (default: 5)")
     parser.add_argument("--neurons", type=int, default=128, choices=[8, 64, 128], help="Number of neurons (default: 128)")
     
@@ -301,9 +302,11 @@ def main():
             config = BrainConfig()
             use_128 = False
         
-        # Set custom Gemini model if specified
+        # Set custom model based on provider
         if args.api_provider == "gemini":
             config.gemini_model_name = args.gemini_model
+        else:
+            config.hyperbolic_model_name = args.hyperbolic_model
         
         brain = PhiBrain(
             config=config,

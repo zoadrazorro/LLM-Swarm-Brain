@@ -63,7 +63,7 @@ class APINeuron:
         gpu_id: int,  # Kept for compatibility, not used
         neuron_id: str,
         activation_threshold: float = 0.6,
-        model_name: str = "meta-llama/Meta-Llama-3.1-405B-Instruct",
+        model_name: str = "meta-llama/Meta-Llama-3.1-405B-Instruct",  # or "openai/gpt-oss-20b" for fast mode
         max_tokens: int = 2048,
         temperature: float = 0.7,
         api_key: Optional[str] = None,
