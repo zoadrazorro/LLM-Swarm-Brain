@@ -437,16 +437,30 @@ class PhiBrain:
             global_context=global_context
         )
 
-        # === CONCEPT TRACKING: Track concepts in neuron outputs ===
+        # === CONCEPT TRACKING & RAG MEMORY: Track concepts and update RAG after each step ===
         if enable_enhancements and processing_result["steps"]:
-            for step in processing_result["steps"]:
+            for step_idx, step in enumerate(processing_result["steps"]):
                 for neuron_id, output in step["outputs"].items():
                     if output:
                         activation = step["activations"].get(neuron_id, 0.0)
+                        
+                        # Track concepts
                         self.concept_tracker.process_neuron_output(
                             neuron_id=neuron_id,
                             output_text=output,
                             activation_level=activation
+                        )
+                        
+                        # Add to RAG memory after each reasoning step
+                        self.rag_memory.add_experience(
+                            question=f"[Step {step_idx+1}] {input_text[:100]}...",
+                            answer=output,
+                            metadata={
+                                "neuron_id": neuron_id,
+                                "activation": activation,
+                                "step": step_idx + 1,
+                                "timestamp": datetime.now().isoformat()
+                            }
                         )
 
         # Global workspace processing (if enabled)

@@ -186,8 +186,20 @@ class PhilosophyDatasetTrainer:
                 self.stats["coherence_scores"].append(result.get("coherence_score", 0.0))
                 self.stats["total_duration"] += result.get("duration_seconds", 0.0)
                 
-                # Update memory
+                # Update persistent memory
                 self._update_memory(question, result)
+                
+                # Update brain's RAG memory for cumulative learning
+                self.brain.rag_memory.add_experience(
+                    question=question,
+                    answer=result.get("conscious_content", ""),
+                    metadata={
+                        "consciousness": result.get("consciousness_level", 0.0),
+                        "integration": result.get("integration_score", 0.0),
+                        "coherence": result.get("coherence_score", 0.0),
+                        "timestamp": datetime.now().isoformat()
+                    }
+                )
                 
                 # Log progress
                 if (i + 1) % batch_size == 0:
