@@ -148,10 +148,10 @@ class AttentionWindowManager:
                 affinity[reas][act] = 0.8
                 affinity[act][reas] = 0.5
 
-        # Self-critique has high affinity with all action roles
+        # Meta-cognitive expert has high affinity with all roles (quality control)
         for role in all_roles:
-            affinity[NeuronRole.SELF_CRITIQUE][role] = 0.6
-            affinity[role][NeuronRole.SELF_CRITIQUE] = 0.6
+            affinity[NeuronRole.META_COGNITIVE_EXPERT][role] = 0.7
+            affinity[role][NeuronRole.META_COGNITIVE_EXPERT] = 0.6
 
         return affinity
 
