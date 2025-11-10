@@ -1,0 +1,258 @@
+{
+  "test_type": "expanded_philosophy",
+  "timestamp": "2025-11-10T12:41:01.312762",
+  "config": {
+    "model": "meta-llama/Meta-Llama-3.1-405B-Instruct",
+    "total_neurons": 64,
+    "max_questions_per_level": 1,
+    "levels_tested": "1-10"
+  },
+  "levels": {
+    "1": {
+      "name": "Foundational Concepts",
+      "description": "Basic philosophical terminology and classical ideas",
+      "questions": [
+        {
+          "question": "What is Socrates' definition of knowledge in Plato's Theaetetus?",
+          "answer": "No conscious content yet.",
+          "duration_seconds": 1.919573,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.18785830851863275,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.919573,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.18785830851863275
+      }
+    },
+    "2": {
+      "name": "Basic Logical Reasoning",
+      "description": "Simple philosophical arguments and logical structures",
+      "questions": [
+        {
+          "question": "If pleasure is good, and virtue produces pleasure, does that make virtue good? (Epicurean reasoning)",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_metacognitive_awareness] (salience=0.774): [metacognitive_awareness] processed input '[metacognitive_awareness] processed input '[metacognitive...\n2. [n3_reasoning_probabilistic_reasoning] (salience=0.768): [probabilistic_reasoning] processed input '[probabilistic_reasoning] processed input '[probabilistic...\n3. [n2_memory_semantic_memory] (salience=0.766): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...",
+          "duration_seconds": 1.445678,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.44440453193702606,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.445678,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.44440453193702606
+      }
+    },
+    "3": {
+      "name": "Pattern Recognition & Connections",
+      "description": "Identifying philosophical patterns and historical connections",
+      "questions": [
+        {
+          "question": "What pattern connects Plato's Forms, Kant's noumena, and thing-in-itself concepts?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n3_reasoning_probabilistic_reasoning] (salience=0.768): [probabilistic_reasoning] processed input '[probabilistic_reasoning] processed input '[probabilistic...\n2. [n2_memory_semantic_memory] (salience=0.766): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n3. [n7_meta_cognitive_metacognitive_awareness] (salience=0.813): [metacognitive_awareness] processed input '[metacognitive_awareness] processed input '[metacognitive...\n4. [n2_memory_semantic_memory] (salience=0.804): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n5. [n2_memory_episodic_memory] (salience=0.800): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...",
+          "duration_seconds": 1.495411,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.45666926828504284,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.495411,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.45666926828504284
+      }
+    },
+    "4": {
+      "name": "Abstract Conceptual Analysis",
+      "description": "Complex philosophical concepts and their relationships",
+      "questions": [
+        {
+          "question": "What is the relationship between essence and existence in existentialist thought?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_semantic_memory] (salience=0.804): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n2. [n2_memory_episodic_memory] (salience=0.800): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...\n3. [n7_meta_cognitive_metacognitive_awareness] (salience=0.797): [metacognitive_awareness] processed input '[metacognitive_awareness] processed input '[metacognitive...\n4. [n2_memory_semantic_memory] (salience=0.796): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n5. [n6_synthesis_holistic_synthesis] (salience=0.785): [holistic_synthesis] processed input '[holistic_synthesis] processed input '[holistic_synthesis] p'....",
+          "duration_seconds": 1.928996,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.45358471955514884,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.928996,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.45358471955514884
+      }
+    },
+    "5": {
+      "name": "Counterfactual & Hypothetical Reasoning",
+      "description": "Thought experiments and alternative scenarios",
+      "questions": [
+        {
+          "question": "If personal identity depends on memory (Locke), what happens if you have false memories?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_semantic_memory] (salience=0.796): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n2. [n6_synthesis_holistic_synthesis] (salience=0.785): [holistic_synthesis] processed input '[holistic_synthesis] processed input '[holistic_synthesis] p'....\n3. [n7_meta_cognitive_metacognitive_awareness] (salience=0.784): [metacognitive_awareness] processed input '[metacognitive_awareness] processed input '[metacognitive...\n4. [n4_creative_conceptual_blending] (salience=0.778): [conceptual_blending] processed input '[conceptual_blending] processed input '[conceptual_blending]'...\n5. [n2_memory_semantic_memory] (salience=0.769): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...",
+          "duration_seconds": 1.911694,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4427129419558542,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.911694,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.4427129419558542
+      }
+    },
+    "6": {
+      "name": "Meta-Philosophical Analysis",
+      "description": "Philosophy of philosophy and methodological questions",
+      "questions": [
+        {
+          "question": "Can philosophy make progress, or does it merely reformulate eternal questions?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n4_creative_conceptual_blending] (salience=0.778): [conceptual_blending] processed input '[conceptual_blending] processed input '[conceptual_blending]'...\n2. [n2_memory_semantic_memory] (salience=0.769): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n3. [n7_meta_cognitive_metacognitive_awareness] (salience=0.805): [metacognitive_awareness] processed input '[metacognitive_awareness] processed input '[metacognitive...\n4. [n2_memory_episodic_memory] (salience=0.799): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...\n5. [n4_creative_metaphor_generation] (salience=0.788): [metaphor_generation] processed input '[metaphor_generation] processed input '[metaphor_generation]'...",
+          "duration_seconds": 1.787675,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.45489568670174485,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.787675,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.45489568670174485
+      }
+    },
+    "7": {
+      "name": "Deep Metaphysical Questions",
+      "description": "Fundamental questions about reality and existence",
+      "questions": [
+        {
+          "question": "Why is there something rather than nothing? (Leibnizian cosmological question)",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_episodic_memory] (salience=0.799): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...\n2. [n4_creative_metaphor_generation] (salience=0.788): [metaphor_generation] processed input '[metaphor_generation] processed input '[metaphor_generation]'...\n3. [n2_memory_memory_consolidation] (salience=0.794): [memory_consolidation] processed input '[memory_consolidation] processed input '[memory_consolidatio...\n4. [n2_memory_semantic_memory] (salience=0.791): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n5. [n2_memory_episodic_memory] (salience=0.788): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...",
+          "duration_seconds": 1.852511,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4533278775877143,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.852511,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.4533278775877143
+      }
+    },
+    "8": {
+      "name": "Complex Multi-Step Problems",
+      "description": "Philosophical puzzles requiring sustained reasoning",
+      "questions": [
+        {
+          "question": "Gettier Problem Chain: If justified true belief isn't sufficient for knowledge, and we add a 'no false lemmas' condition, does that solve it? What if the justification is itself only accidentally true? How many conditions are needed?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_semantic_memory] (salience=0.791): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n2. [n2_memory_episodic_memory] (salience=0.788): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...\n3. [n2_memory_semantic_memory] (salience=0.787): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n4. [n2_memory_memory_consolidation] (salience=0.787): [memory_consolidation] processed input '[memory_consolidation] processed input '[memory_consolidatio...\n5. [n2_memory_episodic_memory] (salience=0.784): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...",
+          "duration_seconds": 1.965803,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4507618552163384,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.965803,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.4507618552163384
+      }
+    },
+    "9": {
+      "name": "Advanced Synthesis & Integration",
+      "description": "Integrating multiple philosophical domains and perspectives",
+      "questions": [
+        {
+          "question": "How can we reconcile the phenomenological first-person perspective with the scientific third-person perspective on consciousness?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_memory_consolidation] (salience=0.787): [memory_consolidation] processed input '[memory_consolidation] processed input '[memory_consolidatio...\n2. [n2_memory_episodic_memory] (salience=0.784): [episodic_memory] processed input '[episodic_memory] processed input '[episodic_memory] process'. (s...\n3. [n7_meta_cognitive_metacognitive_awareness] (salience=0.974): [metacognitive_awareness] processed input '[metacognitive_awareness] processed input '[metacognitive...\n4. [n3_reasoning_analogical_reasoning] (salience=0.971): [analogical_reasoning] processed input '[analogical_reasoning] processed input '[analogical_reasonin...\n5. [n2_memory_semantic_memory] (salience=0.964): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...",
+          "duration_seconds": 2.15675,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 12,
+          "consciousness_level": 0.5112849550208866,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 2.15675,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.5112849550208866
+      }
+    },
+    "10": {
+      "name": "Cutting-Edge & Speculative Philosophy",
+      "description": "Contemporary debates and frontier philosophical questions",
+      "questions": [
+        {
+          "question": "If we create artificial general intelligence with apparent consciousness, what criteria would determine if it's genuinely conscious vs merely simulating consciousness?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n3_reasoning_analogical_reasoning] (salience=0.971): [analogical_reasoning] processed input '[analogical_reasoning] processed input '[analogical_reasonin...\n2. [n2_memory_semantic_memory] (salience=0.964): [semantic_memory] processed input '[semantic_memory] processed input '[semantic_memory] process'. (s...\n3. [n3_reasoning_abductive_reasoning] (salience=0.838): [abductive_reasoning] processed input '[abductive_reasoning] processed input '[abductive_reasoning]'...\n4. [n7_meta_cognitive_adaptive_regulation] (salience=0.832): [adaptive_regulation] processed input '[adaptive_regulation] processed input '[adaptive_regulation]'...\n5. [n3_reasoning_inductive_reasoning] (salience=0.830): [inductive_reasoning] processed input '[inductive_reasoning] processed input '[inductive_reasoning]'...",
+          "duration_seconds": 1.883892,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4653122411744695,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 1,
+        "successful": 1,
+        "failed": 0,
+        "avg_duration": 1.883892,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.4653122411744695
+      }
+    }
+  },
+  "summary": {
+    "total_questions": 10,
+    "total_duration_seconds": 18.347983,
+    "avg_duration_per_question": 1.8347982999999999,
+    "levels_completed": 10
+  }
+}

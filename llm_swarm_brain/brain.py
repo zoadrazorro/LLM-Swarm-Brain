@@ -16,6 +16,7 @@ from datetime import datetime
 
 from llm_swarm_brain.neuron import Phi3Neuron
 from llm_swarm_brain.neuron_api import APINeuron
+from llm_swarm_brain.neuron_gemini import GeminiNeuron
 from llm_swarm_brain.orchestrator import NeuralOrchestrator
 from llm_swarm_brain.gw_theory import GlobalWorkspace, ConsciousnessMonitor
 from llm_swarm_brain.positronic_framework import PositronicFramework
@@ -129,7 +130,8 @@ class PhiBrain:
         enable_positronic: bool = True,
         use_api: bool = False,
         api_key: Optional[str] = None,
-        use_64_neurons: bool = False
+        use_64_neurons: bool = False,
+        api_provider: str = "hyperbolic"
     ):
         """
         Initialize PhiBrain
@@ -139,8 +141,9 @@ class PhiBrain:
             load_models: Whether to load models immediately (ignored if use_api=True)
             enable_positronic: Enable positronic dialectical framework
             use_api: Use API-based neurons instead of local models
-            api_key: API key for Hyperbolic (or set HYPERBOLIC_API_KEY env var)
+            api_key: API key (Hyperbolic or Google AI depending on provider)
             use_64_neurons: Use 64-neuron architecture instead of 8-neuron
+            api_provider: API provider ("hyperbolic" or "gemini")
         """
         # Use 64-neuron config if requested
         if use_64_neurons:
@@ -162,6 +165,7 @@ class PhiBrain:
         self.use_api = use_api
         self.api_key = api_key
         self.use_64_neurons = use_64_neurons
+        self.api_provider = api_provider.lower()
         self.load_models = load_models if not use_api else False
         self.enable_positronic = enable_positronic
 
@@ -234,8 +238,17 @@ class PhiBrain:
         neuron_count = 0
         
         # Choose neuron class based on mode
-        NeuronClass = APINeuron if self.use_api else Phi3Neuron
-        mode_str = "API-based" if self.use_api else "local GPU-based"
+        if self.use_api:
+            if self.api_provider == "gemini":
+                NeuronClass = GeminiNeuron
+                mode_str = "Gemini API-based"
+            else:
+                NeuronClass = APINeuron
+                mode_str = "Hyperbolic API-based"
+        else:
+            NeuronClass = Phi3Neuron
+            mode_str = "local GPU-based"
+        
         arch_str = "64-neuron" if self.use_64_neurons else "8-neuron"
 
         # Iterate through all GPUs (or API endpoints)
@@ -256,16 +269,28 @@ class PhiBrain:
                     role_prompt = self._role_prompts.get(role, f"You are a {role.value} expert.")
                     
                     if self.use_api:
-                        neuron = APINeuron(
-                            role=role,
-                            gpu_id=gpu_id,
-                            neuron_id=neuron_id,
-                            activation_threshold=self.config.activation_threshold,
-                            model_name=self.config.model_name,
-                            max_tokens=self.config.max_tokens,
-                            temperature=self.config.temperature,
-                            api_key=self.api_key
-                        )
+                        if self.api_provider == "gemini":
+                            neuron = GeminiNeuron(
+                                role=role,
+                                gpu_id=gpu_id,
+                                neuron_id=neuron_id,
+                                activation_threshold=self.config.activation_threshold,
+                                model_name="gemini-2.5-pro",
+                                max_tokens=self.config.max_tokens,
+                                temperature=self.config.temperature,
+                                api_key=self.api_key
+                            )
+                        else:
+                            neuron = APINeuron(
+                                role=role,
+                                gpu_id=gpu_id,
+                                neuron_id=neuron_id,
+                                activation_threshold=self.config.activation_threshold,
+                                model_name=self.config.model_name,
+                                max_tokens=self.config.max_tokens,
+                                temperature=self.config.temperature,
+                                api_key=self.api_key
+                            )
                         # Override role prompt for API neuron
                         neuron._role_prompt = role_prompt
                     else:

@@ -1,0 +1,458 @@
+{
+  "test_type": "expanded_philosophy",
+  "timestamp": "2025-11-10T12:53:25.781466",
+  "config": {
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "total_neurons": 8,
+    "max_questions_per_level": 3,
+    "levels_tested": "1-10"
+  },
+  "levels": {
+    "1": {
+      "name": "Foundational Concepts",
+      "description": "Basic philosophical terminology and classical ideas",
+      "questions": [
+        {
+          "question": "What is Socrates' definition of knowledge in Plato's Theaetetus?",
+          "answer": "No conscious content yet.",
+          "duration_seconds": 0.291478,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.1840822272228306,
+          "success": true
+        },
+        {
+          "question": "What does Aristotle mean by 'the good life' (eudaimonia)?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.754): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input 'What does Aristotl...",
+          "duration_seconds": 0.126623,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4323383804851149,
+          "success": true
+        },
+        {
+          "question": "What is Descartes' famous statement about certainty?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.754): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input 'What does Aristotl...",
+          "duration_seconds": 0.10746,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4316391217201252,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.175187,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.34935324314269023
+      }
+    },
+    "2": {
+      "name": "Basic Logical Reasoning",
+      "description": "Simple philosophical arguments and logical structures",
+      "questions": [
+        {
+          "question": "If pleasure is good, and virtue produces pleasure, does that make virtue good? (Epicurean reasoning)",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.754): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input 'What does Aristotl...",
+          "duration_seconds": 0.168181,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.434785231650185,
+          "success": true
+        },
+        {
+          "question": "If we can doubt everything, can we doubt that we are doubting? (Cartesian doubt)",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.754): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input 'What does Aristotl...\n2. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.803): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n3. [n6_synthesis_synthesis_expert] (salience=0.789): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n4. [n2_memory_memory_expert] (salience=0.783): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.164346,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4482654827734975,
+          "success": true
+        },
+        {
+          "question": "If all swans we've observed are white, must all swans be white? (Induction problem)",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.754): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input 'What does Aristotl...\n2. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.803): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n3. [n6_synthesis_synthesis_expert] (salience=0.789): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n4. [n2_memory_memory_expert] (salience=0.783): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n5. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.778): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...",
+          "duration_seconds": 0.087128,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 1,
+          "consciousness_level": 0.428554783115031,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.139885,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.4372018325129045
+      }
+    },
+    "3": {
+      "name": "Pattern Recognition & Connections",
+      "description": "Identifying philosophical patterns and historical connections",
+      "questions": [
+        {
+          "question": "What pattern connects Plato's Forms, Kant's noumena, and thing-in-itself concepts?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.803): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n2. [n6_synthesis_synthesis_expert] (salience=0.789): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n3. [n2_memory_memory_expert] (salience=0.783): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n4. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.778): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n5. [n3_reasoning_reasoning_expert] (salience=0.768): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...",
+          "duration_seconds": 0.147185,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 1,
+          "consciousness_level": 0.43448776524337,
+          "success": true
+        },
+        {
+          "question": "How does Hegel's dialectic (thesis-antithesis-synthesis) apply to historical change?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_memory_expert] (salience=0.783): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n2. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.778): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n3. [n3_reasoning_reasoning_expert] (salience=0.768): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n4. [n6_synthesis_synthesis_expert] (salience=0.779): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n3_reasoning_reasoning_expert] (salience=0.765): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...",
+          "duration_seconds": 0.139594,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 2,
+          "consciousness_level": 0.4381366353549387,
+          "success": true
+        },
+        {
+          "question": "What connects Descartes' dualism, Berkeley's idealism, and materialism as responses to the mind-body problem?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.779): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.765): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n6_synthesis_synthesis_expert] (salience=0.770): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n4. [n2_memory_memory_expert] (salience=0.766): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n5. [n4_creative_creative_expert] (salience=0.759): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.191571,
+          "neurons_fired": 0,
+          "propagation_steps": 3,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.43748712456841704,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.15945,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.4367038417222419
+      }
+    },
+    "4": {
+      "name": "Abstract Conceptual Analysis",
+      "description": "Complex philosophical concepts and their relationships",
+      "questions": [
+        {
+          "question": "What is the relationship between essence and existence in existentialist thought?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_memory_expert] (salience=0.766): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n2. [n4_creative_creative_expert] (salience=0.759): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n3. [n6_synthesis_synthesis_expert] (salience=0.815): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n4. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.814): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n5. [n2_memory_memory_expert] (salience=0.804): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.270994,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4575923854669877,
+          "success": true
+        },
+        {
+          "question": "How does Kant reconcile empiricism and rationalism in his Critique of Pure Reason?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.814): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n2. [n2_memory_memory_expert] (salience=0.804): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n3. [n4_creative_creative_expert] (salience=0.764): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n4. [n2_memory_memory_expert] (salience=0.761): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n5. [n6_synthesis_synthesis_expert] (salience=0.761): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...",
+          "duration_seconds": 0.269589,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.43682101859830436,
+          "success": true
+        },
+        {
+          "question": "What does Wittgenstein mean by 'the limits of my language are the limits of my world'?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n2_memory_memory_expert] (salience=0.761): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n2. [n6_synthesis_synthesis_expert] (salience=0.761): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.786): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n4_creative_creative_expert] (salience=0.774): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n5. [n2_memory_memory_expert] (salience=0.766): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.244889,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4476028300798401,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.261824,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.44733874471504403
+      }
+    },
+    "5": {
+      "name": "Counterfactual & Hypothetical Reasoning",
+      "description": "Thought experiments and alternative scenarios",
+      "questions": [
+        {
+          "question": "If personal identity depends on memory (Locke), what happens if you have false memories?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n4_creative_creative_expert] (salience=0.774): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n2. [n2_memory_memory_expert] (salience=0.766): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.781): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.777): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n4_creative_creative_expert] (salience=0.768): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.257101,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.44357070357805245,
+          "success": true
+        },
+        {
+          "question": "What would ethics look like if Kant's categorical imperative were the only moral principle?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n4_creative_creative_expert] (salience=0.774): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n2. [n2_memory_memory_expert] (salience=0.766): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.781): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.777): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n4_creative_creative_expert] (salience=0.768): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.051138,
+          "neurons_fired": 0,
+          "propagation_steps": 1,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.1618039154346467,
+          "success": true
+        },
+        {
+          "question": "If Nietzsche's eternal recurrence were true, how would it change moral decision-making?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.781): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n2. [n6_synthesis_synthesis_expert] (salience=0.777): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n3. [n4_creative_creative_expert] (salience=0.768): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n4. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.783): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n5. [n4_creative_creative_expert] (salience=0.767): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.185537,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 2,
+          "consciousness_level": 0.43549891261778234,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.16459200000000002,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.3469578438768272
+      }
+    },
+    "6": {
+      "name": "Meta-Philosophical Analysis",
+      "description": "Philosophy of philosophy and methodological questions",
+      "questions": [
+        {
+          "question": "Can philosophy make progress, or does it merely reformulate eternal questions?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.783): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n2. [n4_creative_creative_expert] (salience=0.767): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.786): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.773): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n4_creative_creative_expert] (salience=0.768): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.226179,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.44199605425686045,
+          "success": true
+        },
+        {
+          "question": "What are the limits of rational inquiry in addressing philosophical problems?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.773): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n4_creative_creative_expert] (salience=0.768): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.781): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.776): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n4_creative_creative_expert] (salience=0.758): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.228773,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.4465268175577539,
+          "success": true
+        },
+        {
+          "question": "How do we know which philosophical method (analytic, phenomenological, pragmatic) is appropriate for which questions?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.776): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n4_creative_creative_expert] (salience=0.758): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.789): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.786): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.770): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.248903,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.45214965232681187,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.23461833333333335,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.44689084138047536
+      }
+    },
+    "7": {
+      "name": "Deep Metaphysical Questions",
+      "description": "Fundamental questions about reality and existence",
+      "questions": [
+        {
+          "question": "Why is there something rather than nothing? (Leibnizian cosmological question)",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.776): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n4_creative_creative_expert] (salience=0.758): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.789): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.786): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.770): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.102319,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.1666598581996505,
+          "success": true
+        },
+        {
+          "question": "Is consciousness fundamental to reality or emergent from physical processes?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n4_creative_creative_expert] (salience=0.758): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n2. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.789): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n3. [n6_synthesis_synthesis_expert] (salience=0.786): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n4. [n2_memory_memory_expert] (salience=0.770): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n5. [n4_creative_creative_expert] (salience=0.763): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...",
+          "duration_seconds": 0.23439,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 1,
+          "consciousness_level": 0.439889715719997,
+          "success": true
+        },
+        {
+          "question": "Does the hard problem of consciousness (Chalmers) show that physicalism is false?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.786): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n2_memory_memory_expert] (salience=0.770): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...\n3. [n4_creative_creative_expert] (salience=0.763): [creative_expert] processed input '[creative_expert] processed input '[creative_expert] process'. (s...\n4. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.782): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n5. [n6_synthesis_synthesis_expert] (salience=0.780): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...",
+          "duration_seconds": 0.211558,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 2,
+          "consciousness_level": 0.4426662689654317,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.18275566666666665,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.34973861429502645
+      }
+    },
+    "8": {
+      "name": "Complex Multi-Step Problems",
+      "description": "Philosophical puzzles requiring sustained reasoning",
+      "questions": [
+        {
+          "question": "Gettier Problem Chain: If justified true belief isn't sufficient for knowledge, and we add a 'no false lemmas' condition, does that solve it? What if the justification is itself only accidentally true? How many conditions are needed?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.782): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n2. [n6_synthesis_synthesis_expert] (salience=0.780): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.781): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.767): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n0_perception_perception_expert] (salience=0.762): [perception_expert] processed input '[perception_expert] processed input '[perception_expert] pro'. ...",
+          "duration_seconds": 0.239932,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.44022909176760594,
+          "success": true
+        },
+        {
+          "question": "Modal Metaphysics: If possible worlds are real (Lewis), how do we have knowledge of them? If they're abstract (Plantinga), how do they ground modal truths? If they're linguistic (Carnap), how do they capture metaphysical necessity? Which view is most defensible?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.767): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n0_perception_perception_expert] (salience=0.762): [perception_expert] processed input '[perception_expert] processed input '[perception_expert] pro'. ...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=0.965): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=0.948): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n0_perception_perception_expert] (salience=0.936): [perception_expert] processed input '[perception_expert] processed input '[perception_expert] pro'. ...",
+          "duration_seconds": 0.316101,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 3,
+          "consciousness_level": 0.5042389631344913,
+          "success": true
+        },
+        {
+          "question": "Personal Identity Spectrum: You're slowly replaced neuron-by-neuron with silicon chips that maintain the same functional relations. At what point (if any) do you cease to exist? Does the answer change if it happens instantaneously? What does this reveal about personal identity?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=0.948): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n0_perception_perception_expert] (salience=0.936): [perception_expert] processed input '[perception_expert] processed input '[perception_expert] pro'. ...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.004): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...",
+          "duration_seconds": 0.293097,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 4,
+          "consciousness_level": 0.522419244251901,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.28304333333333337,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.48896243305133275
+      }
+    },
+    "9": {
+      "name": "Advanced Synthesis & Integration",
+      "description": "Integrating multiple philosophical domains and perspectives",
+      "questions": [
+        {
+          "question": "How can we reconcile the phenomenological first-person perspective with the scientific third-person perspective on consciousness?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.013): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.007): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.998): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.268247,
+          "neurons_fired": 0,
+          "propagation_steps": 4,
+          "global_workspace_broadcasts": 4,
+          "consciousness_level": 0.5204548591556992,
+          "success": true
+        },
+        {
+          "question": "What is the relationship between moral realism, naturalism, and the is-ought gap? Can all three be maintained consistently?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.013): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.007): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.998): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.050631,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.16826854507131137,
+          "success": true
+        },
+        {
+          "question": "How do different theories of truth (correspondence, coherence, pragmatic, deflationary) relate to debates about realism vs anti-realism?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.013): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.007): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.998): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.050018,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.17340490880186163,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.12296533333333333,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.2873761043429574
+      }
+    },
+    "10": {
+      "name": "Cutting-Edge & Speculative Philosophy",
+      "description": "Contemporary debates and frontier philosophical questions",
+      "questions": [
+        {
+          "question": "If we create artificial general intelligence with apparent consciousness, what criteria would determine if it's genuinely conscious vs merely simulating consciousness?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.013): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.007): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.998): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.05117,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.18400105484255583,
+          "success": true
+        },
+        {
+          "question": "How should we think about personal identity in scenarios involving mind uploading, brain emulation, and digital consciousness?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.013): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.007): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.998): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.046469,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.18157063027230033,
+          "success": true
+        },
+        {
+          "question": "What are the implications of quantum mechanics for causation, determinism, and the nature of physical reality?",
+          "answer": "=== CONSCIOUS CONTENT ===\n1. [n6_synthesis_synthesis_expert] (salience=1.000): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n2. [n3_reasoning_reasoning_expert] (salience=0.988): [reasoning_expert] processed input '[reasoning_expert] processed input '[reasoning_expert] proce'. (...\n3. [n7_meta_cognitive_meta_cognitive_expert] (salience=1.013): [meta_cognitive_expert] processed input '[meta_cognitive_expert] processed input '[meta_cognitive_ex...\n4. [n6_synthesis_synthesis_expert] (salience=1.007): [synthesis_expert] processed input '[synthesis_expert] processed input '[synthesis_expert] proce'. (...\n5. [n2_memory_memory_expert] (salience=0.998): [memory_expert] processed input '[memory_expert] processed input '[memory_expert] processed i'. (sim...",
+          "duration_seconds": 0.05598,
+          "neurons_fired": 0,
+          "propagation_steps": 2,
+          "global_workspace_broadcasts": 0,
+          "consciousness_level": 0.1738551046615161,
+          "success": true
+        }
+      ],
+      "statistics": {
+        "total_questions": 3,
+        "successful": 3,
+        "failed": 0,
+        "avg_duration": 0.05120633333333333,
+        "avg_neurons_fired": 0.0,
+        "avg_consciousness": 0.1798089299254574
+      }
+    }
+  },
+  "summary": {
+    "total_questions": 30,
+    "total_duration_seconds": 5.326580999999999,
+    "avg_duration_per_question": 0.17755269999999998,
+    "levels_completed": 10
+  }
+}

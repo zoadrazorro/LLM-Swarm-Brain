@@ -358,8 +358,9 @@ def main():
     parser.add_argument("--quick", action="store_true", help="Quick test mode (1 question per level)")
     parser.add_argument("--sample", action="store_true", help="Sample mode (3 questions per level)")
     parser.add_argument("--load-models", action="store_true", help="Load actual models (default: simulation)")
-    parser.add_argument("--use-api", action="store_true", help="Use Hyperbolic API (Llama 3.1 405B)")
-    parser.add_argument("--api-key", type=str, help="Hyperbolic API key (or set HYPERBOLIC_API_KEY env var)")
+    parser.add_argument("--use-api", action="store_true", help="Use API instead of local models")
+    parser.add_argument("--api-provider", type=str, default="hyperbolic", choices=["hyperbolic", "gemini"], help="API provider (hyperbolic or gemini)")
+    parser.add_argument("--api-key", type=str, help="API key (HYPERBOLIC_API_KEY or GOOGLE_API_KEY env var)")
     parser.add_argument("--use-64-neurons", action="store_true", help="Use 64-neuron architecture (default: 8)")
     parser.add_argument("--start-level", type=int, default=1, help="Starting level (1-10)")
     parser.add_argument("--end-level", type=int, default=10, help="Ending level (1-10)")
@@ -390,12 +391,23 @@ def main():
     
     neuron_count = 64 if args.use_64_neurons else 8
     
+    # Determine execution mode description
+    if use_api:
+        if args.api_provider == "gemini":
+            exec_mode = "API (Gemini 2.5 Pro)"
+        else:
+            exec_mode = "API (Llama 3.1 405B)"
+    elif load_models:
+        exec_mode = "Local Models"
+    else:
+        exec_mode = "Simulation"
+    
     logger.info(f"\n{'='*80}")
     logger.info("EXPANDED PHILOSOPHY TEST - LLM-SWARM-BRAIN")
     logger.info(f"{'='*80}")
     logger.info(f"Test Configuration:")
     logger.info(f"  - Mode: {mode_desc}")
-    logger.info(f"  - Execution: {'API (Llama 3.1 405B)' if use_api else 'Local Models' if load_models else 'Simulation'}")
+    logger.info(f"  - Execution: {exec_mode}")
     logger.info(f"  - Architecture: {neuron_count} neurons")
     logger.info(f"  - Questions per Level: {max_per_level}")
     logger.info(f"  - Levels: {start_level}-{end_level}")
@@ -419,7 +431,8 @@ def main():
             load_models=load_models,
             use_api=use_api,
             api_key=args.api_key,
-            use_64_neurons=args.use_64_neurons
+            use_64_neurons=args.use_64_neurons,
+            api_provider=args.api_provider
         )
         
         # Run test
