@@ -89,6 +89,7 @@ class Phi3Neuron:
         self.model_name = model_name
         self.max_tokens = max_tokens
         self.temperature = temperature
+        self.load_model = load_model
 
         # Neural properties
         self.connections: List[NeuronConnection] = []
@@ -241,8 +242,17 @@ class Phi3Neuron:
                 global_context=global_context
             )
 
-            # Generate response using Phi-3
-            output = self._generate(context)
+            # Generate response using Phi-3 or simulation fallback
+            if self.model is None or self.tokenizer is None:
+                if self.load_model:
+                    self._load_model()
+                else:
+                    output = self._simulate_output(input_signal, global_context)
+            else:
+                output = self._generate(context)
+
+            if output is None:
+                output = self._simulate_output(input_signal, global_context)
 
             # Store in history
             self.output_history.append(output)
@@ -302,6 +312,26 @@ class Phi3Neuron:
         )
 
         return response.strip()
+
+    def _simulate_output(
+        self,
+        input_signal: NeuronSignal,
+        global_context: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """Return a lightweight simulated response when models are not available."""
+        context_bits = []
+        if global_context:
+            if memory := global_context.get("memory"):
+                short_term = memory.get("short_term") or []
+                if short_term:
+                    context_bits.append(f"Recent memory: {short_term[-1]}")
+        base_response = (
+            f"[{self.role.value}] processed input '{input_signal.content[:60]}'. "
+            "(simulation mode)"
+        )
+        if context_bits:
+            base_response += " Context -> " + " | ".join(context_bits)
+        return base_response
 
     def receive_signal(
         self,

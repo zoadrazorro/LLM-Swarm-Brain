@@ -8,6 +8,13 @@ import sys
 import os
 import json
 from datetime import datetime
+from typing import Any
+from dataclasses import asdict, is_dataclass
+
+try:
+    import numpy as np  # type: ignore
+except ImportError:  # pragma: no cover - numpy is expected but handle gracefully
+    np = None
 
 # Add parent directory to path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
@@ -75,13 +82,44 @@ PROBING_QUESTIONS = {
 }
 
 
+def _make_serializable(value: Any) -> Any:
+    """Recursively convert objects to JSON-serializable types."""
+    if isinstance(value, dict):
+        return {k: _make_serializable(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_make_serializable(item) for item in value]
+    if isinstance(value, tuple):
+        return [_make_serializable(item) for item in value]
+    if isinstance(value, set):
+        return [_make_serializable(item) for item in value]
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if is_dataclass(value):
+        return _make_serializable(asdict(value))
+    if np is not None:
+        if isinstance(value, (np.generic,)):
+            return value.item()
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+    if hasattr(value, "isoformat") and callable(getattr(value, "isoformat")):
+        try:
+            return value.isoformat()
+        except TypeError:
+            pass
+    if hasattr(value, "__dict__") and value.__dict__:
+        return _make_serializable(vars(value))
+    return value
+
+
 def save_results(results, filename="inference_results.json"):
     """Save inference results to a JSON file"""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_file = f"{filename.split('.')[0]}_{timestamp}.json"
-    
+
+    serializable_results = _make_serializable(results)
+
     with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+        json.dump(serializable_results, f, indent=2, ensure_ascii=False)
     
     logger.info(f"Results saved to {output_file}")
     return output_file
