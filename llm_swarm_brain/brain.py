@@ -43,7 +43,8 @@ try:
     HAS_128_CONFIG = True
 except ImportError:
     HAS_128_CONFIG = False
-from llm_swarm_brain.utils import CircularBuffer, calculate_phi
+from llm_swarm_brain.utils import CircularBuffer, calculate_phi, EmbeddingManager
+from llm_swarm_brain.rag_memory import RAGMemory
 
 
 logger = logging.getLogger(__name__)
@@ -221,6 +222,15 @@ class PhiBrain:
             adaptation_rate=0.1,
             enable_auto_tuning=True
         )
+
+        # RAG Memory for semantic retrieval
+        self.embedding_manager = EmbeddingManager()
+        self.rag_memory = RAGMemory(
+            embedding_manager=self.embedding_manager,
+            memory_file="training_checkpoints/training_memory.pkl",
+            top_k=3
+        )
+        logger.info(f"RAG Memory initialized: {self.rag_memory.get_stats()['total_experiences']} experiences loaded")
 
         # Neurons (initialized in _initialize_neurons)
         self.perception_neurons: List[Phi3Neuron] = []
@@ -406,9 +416,23 @@ class PhiBrain:
         if use_memory:
             global_context["memory"] = self.memory.get_context()
 
+        # === RAG MEMORY: Retrieve similar past experiences ===
+        rag_context = ""
+        if enable_enhancements and self.rag_memory.experiences:
+            similar_experiences = self.rag_memory.retrieve_similar(input_text, top_k=3)
+            if similar_experiences:
+                rag_context = self.rag_memory.format_context(similar_experiences)
+                global_context["rag_memory"] = rag_context
+                logger.info(f"RAG: Retrieved {len(similar_experiences)} similar experiences")
+
+        # Augment input with RAG context if available
+        augmented_input = input_text
+        if rag_context:
+            augmented_input = f"{rag_context}\n\n### Current Question:\n{input_text}"
+
         # Initial processing through neural network
         processing_result = self.orchestrator.process(
-            input_text=input_text,
+            input_text=augmented_input,
             max_steps=max_steps,
             global_context=global_context
         )

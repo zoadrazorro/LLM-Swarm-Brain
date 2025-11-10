@@ -1,0 +1,108 @@
+{
+  "levels": [
+    {
+      "level_name": "level_1_foundation",
+      "questions": [
+        {
+          "question": "What is consciousness?",
+          "consciousness": 0.5179559918740557,
+          "integration": 1.0,
+          "coherence": 0.0,
+          "duration": 171.533145,
+          "api_calls": 8
+        },
+        {
+          "question": "Explain the mind-body problem.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 184.486579,
+          "api_calls": 8
+        },
+        {
+          "question": "What is the difference between knowledge and belief?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 123.569397,
+          "api_calls": 8
+        }
+      ],
+      "avg_consciousness": 0.6104782686085389,
+      "avg_integration": 0.9399050184489727,
+      "avg_coherence": 0.0,
+      "total_duration": 479.589121,
+      "api_calls_used": 24
+    },
+    {
+      "level_name": "level_2_reasoning",
+      "questions": [
+        {
+          "question": "Compare deductive and inductive reasoning.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 188.964556,
+          "api_calls": 8
+        },
+        {
+          "question": "Explain the problem of induction.",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 182.511927,
+          "api_calls": 8
+        },
+        {
+          "question": "What is the Chinese Room argument?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 166.674106,
+          "api_calls": 8
+        }
+      ],
+      "avg_consciousness": 0.6567394069757806,
+      "avg_integration": 0.909857527673459,
+      "avg_coherence": 0.0,
+      "total_duration": 538.150589,
+      "api_calls_used": 24
+    },
+    {
+      "level_name": "level_3_integration",
+      "questions": [
+        {
+          "question": "How does the hard problem of consciousness relate to functionalism?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 201.348088,
+          "api_calls": 8
+        },
+        {
+          "question": "Can compatibilism reconcile free will and determinism?",
+          "consciousness": 0.6567394069757806,
+          "integration": 0.9098575276734591,
+          "coherence": 0.0,
+          "duration": 206.243338,
+          "api_calls": 8
+        }
+      ],
+      "avg_consciousness": 0.6567394069757806,
+      "avg_integration": 0.9098575276734591,
+      "avg_coherence": 0.0,
+      "total_duration": 407.59142599999996,
+      "api_calls_used": 16
+    }
+  ],
+  "total_questions": 8,
+  "total_duration": 1425.3311359999998,
+  "budget_status": {
+    "budget": 14.86,
+    "spent": 0.0064,
+    "remaining": 14.8536,
+    "percent_used": 0.04306864064602962,
+    "api_calls": 64,
+    "tokens_used": 64000
+  }
+}
