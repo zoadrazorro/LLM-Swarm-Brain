@@ -16,8 +16,7 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 from llm_swarm_brain.brain import PhiBrain
-from llm_swarm_brain.config_8 import get_config as get_8_config
-from llm_swarm_brain.config_64 import get_config as get_64_config
+from llm_swarm_brain.config import BrainConfig
 
 # Setup logging
 logging.basicConfig(
@@ -49,13 +48,19 @@ class PhilosophyDatasetTrainer:
         
         # Initialize brain
         logger.info(f"Initializing {neurons}-neuron brain...")
-        config = get_8_config() if neurons == 8 else get_64_config()
         
+        # Create config object
+        config = BrainConfig()
         if api_provider == "hyperbolic":
-            config["api_provider"] = "hyperbolic"
-            config["hyperbolic_model_name"] = hyperbolic_model
+            config.hyperbolic_model_name = hyperbolic_model
         
-        self.brain = PhiBrain(config)
+        # Initialize brain with API mode
+        self.brain = PhiBrain(
+            config,
+            use_api=True,
+            use_64_neurons=(neurons == 64),
+            api_provider=api_provider
+        )
         
         # Load persistent memory if exists
         self.memory = self._load_memory()
@@ -71,16 +76,7 @@ class PhilosophyDatasetTrainer:
     
     def _load_memory(self) -> Dict[str, Any]:
         """Load persistent memory from disk"""
-        if self.memory_file.exists():
-            try:
-                with open(self.memory_file, 'rb') as f:
-                    memory = pickle.load(f)
-                logger.info(f"Loaded memory: {len(memory.get('training_history', []))} past experiences")
-                return memory
-            except Exception as e:
-                logger.warning(f"Could not load memory: {e}")
-        
-        return {
+        default_memory = {
             "training_history": [],
             "best_performance": {
                 "consciousness": 0.0,
@@ -91,6 +87,21 @@ class PhilosophyDatasetTrainer:
             "total_questions": 0,
             "training_sessions": 0
         }
+        
+        if self.memory_file.exists():
+            try:
+                with open(self.memory_file, 'rb') as f:
+                    memory = pickle.load(f)
+                # Ensure all required keys exist (for backwards compatibility)
+                for key, value in default_memory.items():
+                    if key not in memory:
+                        memory[key] = value
+                logger.info(f"Loaded memory: {len(memory.get('training_history', []))} past experiences")
+                return memory
+            except Exception as e:
+                logger.warning(f"Could not load memory: {e}")
+        
+        return default_memory
     
     def _save_memory(self):
         """Save persistent memory to disk"""
@@ -193,7 +204,9 @@ class PhilosophyDatasetTrainer:
                     self._save_checkpoint(i + 1)
             
             except Exception as e:
+                import traceback
                 logger.error(f"Error processing question {i+1}: {e}")
+                logger.error(f"Traceback: {traceback.format_exc()}")
                 continue
         
         # Final save
