@@ -294,7 +294,7 @@ class Phi3Neuron:
             return_tensors="pt"
         ).to(self.device)
 
-        # Generate
+        # Generate - disable cache to avoid DynamicCache compatibility issues
         with torch.no_grad():
             outputs = self.model.generate(
                 inputs,
@@ -302,7 +302,8 @@ class Phi3Neuron:
                 temperature=self.temperature,
                 do_sample=True,
                 top_p=0.9,
-                pad_token_id=self.tokenizer.eos_token_id
+                pad_token_id=self.tokenizer.eos_token_id,
+                use_cache=False  # Disable cache to avoid seen_tokens attribute error
             )
 
         # Decode
