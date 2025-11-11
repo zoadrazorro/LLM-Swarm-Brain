@@ -40,7 +40,8 @@ class LocalBrainConfig:
     """Configuration for local 7900XT training with Phi-4"""
     
     # Model configuration
-    model_name: str = "microsoft/Phi-4"
+    model_name: str = "microsoft/phi-4"  # LM Studio model name
+    hyperbolic_model_name: str = "microsoft/phi-4"  # Override for API neurons
     quantization: str = "Q4_K_M"  # ~8GB per model
     max_tokens: int = 1024  # Phi-4 can handle longer contexts
     temperature: float = 0.7
