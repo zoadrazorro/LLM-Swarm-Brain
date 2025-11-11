@@ -15,8 +15,19 @@ echo Starting LM Studio...
 echo Please load Phi-4 Q4_K_M model in the LM Studio GUI
 echo.
 
-REM Start LM Studio (adjust path if needed)
-start "" "C:\Users\%USERNAME%\AppData\Local\Programs\LMStudio\LM Studio.exe"
+REM Start LM Studio - try common paths
+if exist "C:\Users\%USERNAME%\AppData\Local\Programs\LMStudio\LM Studio.exe" (
+    start "" "C:\Users\%USERNAME%\AppData\Local\Programs\LMStudio\LM Studio.exe"
+) else if exist "C:\Program Files\LMStudio\LM Studio.exe" (
+    start "" "C:\Program Files\LMStudio\LM Studio.exe"
+) else if exist "C:\Program Files (x86)\LMStudio\LM Studio.exe" (
+    start "" "C:\Program Files (x86)\LMStudio\LM Studio.exe"
+) else (
+    echo ERROR: LM Studio not found!
+    echo Please start LM Studio manually and configure it for GPU 0, port 1234
+    pause
+    exit /b 1
+)
 
 echo.
 echo LM Studio launched on GPU 0
