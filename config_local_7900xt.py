@@ -53,6 +53,7 @@ class LocalBrainConfig:
     # Phi-4 is 14B params, Q4 = ~8GB per instance
     # Single instance serves all neurons via API
     # Total: 3 neurons on one GPU
+    gpu_count: int = 1  # Single GPU
     total_neurons: int = 3
     neurons_per_gpu: int = 3
     vram_per_neuron: float = 8.0  # GB (Q4 quantization, shared)
