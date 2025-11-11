@@ -1,0 +1,25 @@
+{
+  "training_complete": "2025-11-10T19:23:02.540895",
+  "hardware": "Single GPU (AMD Radeon RX 7900 XT, 20GB VRAM)",
+  "model": "Phi-4 (14B, Q4_K_M)",
+  "neurons": 3,
+  "lm_studio_instances": 1,
+  "rag_shared_with_cloud": true,
+  "max_steps": 2,
+  "total_questions": 50,
+  "total_duration_minutes": 0.0,
+  "avg_time_per_question": 0.0,
+  "final_metrics": {
+    "avg_consciousness": 0.0,
+    "avg_integration": 0.0,
+    "avg_coherence": 0.0
+  },
+  "best_performance": {
+    "consciousness": 0.6567394069757806,
+    "integration": 0.9278860221387673,
+    "coherence": 0.0
+  },
+  "total_training_sessions": 4,
+  "cumulative_questions": 200,
+  "cumulative_time_minutes": 2431.3194467000003
+}
