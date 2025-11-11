@@ -71,14 +71,18 @@ class LocalTrainer:
             api_provider="hyperbolic"  # Uses OpenAI-compatible API
         )
         
-        # Override API URL and model for single LM Studio instance
-        # All 3 neurons use the same server on port 1234
-        # LM Studio uses model name "microsoft/phi-4" (or variants)
-        for neuron in self.brain.orchestrator.neurons.values():
+        # Override API URL and assign different model instances for parallel execution
+        # LM Studio has loaded 3 Phi-4 instances that can run in parallel
+        # Assign each neuron to a different instance
+        model_instances = ["microsoft/phi-4", "microsoft/phi-4:2", "microsoft/phi-4:3"]
+        
+        neuron_list = list(self.brain.orchestrator.neurons.values())
+        for idx, neuron in enumerate(neuron_list):
             if hasattr(neuron, 'api_url'):
                 neuron.api_url = "http://localhost:1234/v1/chat/completions"
-                # Use first available Phi-4 model from LM Studio
-                neuron.model_name = "microsoft/phi-4"
+                # Assign different model instance to each neuron for parallel execution
+                neuron.model_name = model_instances[idx % len(model_instances)]
+                logger.info(f"Assigned {neuron.neuron_id} to {neuron.model_name}")
         
         # Load persistent memory
         self.memory = self._load_memory()
