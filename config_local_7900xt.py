@@ -49,15 +49,14 @@ class LocalBrainConfig:
     lm_studio_url: str = "http://localhost:1234/v1"
     use_lm_studio: bool = True
     
-    # GPU allocation (dual 7900XT setup)
+    # GPU allocation (single LM Studio instance)
     # Phi-4 is 14B params, Q4 = ~8GB per instance
-    # GPU 0: 2 neurons (16GB used)
-    # GPU 1: 2 neurons (16GB used)
-    # Total: 4 neurons across 2 GPUs
-    total_neurons: int = 4
-    neurons_per_gpu: int = 2
-    vram_per_neuron: float = 8.0  # GB (Q4 quantization)
-    total_vram_budget: float = 40.0  # GB (2x 20GB GPUs)
+    # Single instance serves all neurons via API
+    # Total: 3 neurons on one GPU
+    total_neurons: int = 3
+    neurons_per_gpu: int = 3
+    vram_per_neuron: float = 8.0  # GB (Q4 quantization, shared)
+    total_vram_budget: float = 20.0  # GB (single GPU)
     
     # Neural network parameters
     activation_threshold: float = 0.5
@@ -87,46 +86,36 @@ class LocalBrainConfig:
     timeout_seconds: float = 60.0
 
 
-# 4-neuron architecture for dual 7900XT (Phi-4 14B model)
-# GPU 0: 2 neurons, GPU 1: 2 neurons
-# Each neuron handles 2 cognitive functions for balanced processing
+# 3-neuron architecture for single LM Studio instance (Phi-4 14B model)
+# All neurons use the same LM Studio server
+# Each neuron handles multiple cognitive functions
 NEURON_ARCHITECTURE = {
-    # GPU 0 - Neuron 0: Perception & Reasoning
+    # Neuron 0: Perception, Attention, Memory
     "neuron_0": {
-        "role": [NeuronRole.PERCEPTION, NeuronRole.REASONING],
-        "gpu": 0
+        "role": [NeuronRole.PERCEPTION, NeuronRole.ATTENTION, NeuronRole.MEMORY]
     },
-    # GPU 0 - Neuron 1: Attention & Memory
+    # Neuron 1: Reasoning, Creative, Analytical
     "neuron_1": {
-        "role": [NeuronRole.ATTENTION, NeuronRole.MEMORY],
-        "gpu": 0
+        "role": [NeuronRole.REASONING, NeuronRole.CREATIVE, NeuronRole.ANALYTICAL]
     },
-    # GPU 1 - Neuron 2: Creative & Analytical
+    # Neuron 2: Synthesis, Meta-Cognitive
     "neuron_2": {
-        "role": [NeuronRole.CREATIVE, NeuronRole.ANALYTICAL],
-        "gpu": 1
-    },
-    # GPU 1 - Neuron 3: Synthesis & Meta-Cognitive
-    "neuron_3": {
-        "role": [NeuronRole.SYNTHESIS, NeuronRole.META_COGNITIVE],
-        "gpu": 1
+        "role": [NeuronRole.SYNTHESIS, NeuronRole.META_COGNITIVE]
     },
 }
 
 
-# Connection pattern for 4-neuron dual-GPU Phi-4 architecture
+# Connection pattern for 3-neuron single-instance Phi-4 architecture
 DEFAULT_CONNECTIONS = [
     # Forward pipeline
-    (NeuronRole.PERCEPTION, NeuronRole.ATTENTION, 0.9),
-    (NeuronRole.ATTENTION, NeuronRole.MEMORY, 0.85),
+    (NeuronRole.PERCEPTION, NeuronRole.REASONING, 0.9),
+    (NeuronRole.ATTENTION, NeuronRole.REASONING, 0.85),
     (NeuronRole.MEMORY, NeuronRole.REASONING, 0.9),
-    (NeuronRole.REASONING, NeuronRole.CREATIVE, 0.85),
-    (NeuronRole.REASONING, NeuronRole.ANALYTICAL, 0.85),
-    (NeuronRole.CREATIVE, NeuronRole.SYNTHESIS, 0.9),
-    (NeuronRole.ANALYTICAL, NeuronRole.SYNTHESIS, 0.9),
-    (NeuronRole.SYNTHESIS, NeuronRole.META_COGNITIVE, 0.95),
+    (NeuronRole.REASONING, NeuronRole.SYNTHESIS, 0.9),
+    (NeuronRole.CREATIVE, NeuronRole.SYNTHESIS, 0.85),
+    (NeuronRole.ANALYTICAL, NeuronRole.SYNTHESIS, 0.85),
     
-    # Cross-GPU feedback loops
+    # Feedback loops
     (NeuronRole.META_COGNITIVE, NeuronRole.PERCEPTION, 0.75),
     (NeuronRole.META_COGNITIVE, NeuronRole.ATTENTION, 0.70),
     (NeuronRole.SYNTHESIS, NeuronRole.MEMORY, 0.65),

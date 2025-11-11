@@ -54,8 +54,8 @@ class LocalTrainer:
         self.share_rag_with_cloud = share_rag_with_cloud
         
         # Initialize brain for local LM Studio with Phi-4
-        logger.info("Initializing 4-neuron Phi-4 brain for dual-GPU training...")
-        logger.info("GPU 0: 2 neurons | GPU 1: 2 neurons")
+        logger.info("Initializing 3-neuron Phi-4 brain for local training...")
+        logger.info("Single LM Studio instance: 3 neurons")
         logger.info("Using LM Studio at http://localhost:1234")
         logger.info("Model: Phi-4 (14B parameters, enhanced reasoning)")
         if share_rag_with_cloud:
@@ -71,18 +71,11 @@ class LocalTrainer:
             api_provider="hyperbolic"  # Uses OpenAI-compatible API
         )
         
-        # Override API URLs for dual-GPU LM Studio setup
-        # GPU 0 neurons (0-1) -> port 1234
-        # GPU 1 neurons (2-3) -> port 1235
-        neuron_list = list(self.brain.orchestrator.neurons.items())
-        for idx, (neuron_id, neuron) in enumerate(neuron_list):
+        # Override API URL for single LM Studio instance
+        # All 3 neurons use the same server on port 1234
+        for neuron in self.brain.orchestrator.neurons.values():
             if hasattr(neuron, 'api_url'):
-                if idx < 2:
-                    # First 2 neurons -> GPU 0 (port 1234)
-                    neuron.api_url = "http://localhost:1234/v1/chat/completions"
-                else:
-                    # Last 2 neurons -> GPU 1 (port 1235)
-                    neuron.api_url = "http://localhost:1235/v1/chat/completions"
+                neuron.api_url = "http://localhost:1234/v1/chat/completions"
         
         # Load persistent memory
         self.memory = self._load_memory()
@@ -182,8 +175,8 @@ class LocalTrainer:
         """Train brain on philosophy dataset"""
         logger.info(f"Starting LOCAL training on {len(dataset)} questions...")
         logger.info(f"Batch size: {batch_size}, Save interval: {save_interval}")
-        logger.info(f"Hardware: 2x AMD Radeon RX 7900 XT (40GB total VRAM)")
-        logger.info(f"Model: Phi-4 (14B, Q4_K_M) - 4 neurons (2 per GPU)")
+        logger.info(f"Hardware: Single GPU (AMD Radeon RX 7900 XT)")
+        logger.info(f"Model: Phi-4 (14B, Q4_K_M) - 3 neurons (single instance)")
         logger.info(f"RAG Sharing: {'ENABLED - syncing with cloud' if self.share_rag_with_cloud else 'DISABLED'}")
         
         start_time = datetime.now()
@@ -283,10 +276,10 @@ class LocalTrainer:
         """Save final training report"""
         report = {
             "training_complete": datetime.now().isoformat(),
-            "hardware": "2x AMD Radeon RX 7900 XT (40GB total VRAM)",
+            "hardware": "Single GPU (AMD Radeon RX 7900 XT, 20GB VRAM)",
             "model": "Phi-4 (14B, Q4_K_M)",
-            "neurons": 4,
-            "neurons_per_gpu": 2,
+            "neurons": 3,
+            "lm_studio_instances": 1,
             "rag_shared_with_cloud": self.share_rag_with_cloud,
             "max_steps": self.max_steps,
             "total_questions": self.stats["questions_processed"],
@@ -320,12 +313,12 @@ def main():
     args = parser.parse_args()
     
     logger.info("=" * 80)
-    logger.info("LOCAL TRAINING - Dual AMD Radeon RX 7900 XT with Phi-4")
+    logger.info("LOCAL TRAINING - Single GPU with Phi-4")
     logger.info("=" * 80)
     logger.info(f"Configuration:")
-    logger.info(f"  Hardware: 2x AMD Radeon RX 7900 XT (40GB total VRAM)")
+    logger.info(f"  Hardware: Single GPU (AMD Radeon RX 7900 XT, 20GB VRAM)")
     logger.info(f"  Model: Phi-4 (14B parameters, Q4_K_M)")
-    logger.info(f"  Neurons: 4 (2 per GPU, enhanced reasoning)")
+    logger.info(f"  Neurons: 3 (single LM Studio instance)")
     logger.info(f"  Max Steps: {args.max_steps}")
     logger.info(f"  Questions: {args.questions}")
     logger.info(f"  LM Studio: http://localhost:1234")
