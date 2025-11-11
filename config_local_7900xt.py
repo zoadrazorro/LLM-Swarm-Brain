@@ -82,9 +82,9 @@ class LocalBrainConfig:
     consolidation_interval: int = 15
     
     # Performance parameters (optimized for local)
-    parallel_execution: bool = False  # Sequential for stability
+    parallel_execution: bool = True  # Enable parallel API calls to LM Studio
     max_propagation_depth: int = 2  # Fewer steps for speed
-    timeout_seconds: float = 60.0
+    timeout_seconds: float = 120.0  # Longer timeout for parallel requests
 
 
 # 3-neuron architecture for single LM Studio instance (Phi-4 14B model)
