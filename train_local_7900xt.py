@@ -202,10 +202,11 @@ class LocalTrainer:
             
             try:
                 # Process question through brain
+                # Disable meta-orchestration to prevent threshold overrides
                 result = self.brain.think(
                     question,
                     max_steps=self.max_steps,
-                    enable_enhancements=True
+                    enable_enhancements=False  # Disable to prevent threshold changes
                 )
                 
                 # Update statistics
