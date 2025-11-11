@@ -241,6 +241,8 @@ class NeuralOrchestrator:
             neurons_to_fire = [(neuron_id, signal) for neuron_id, signal in signals.items() 
                              if self.neurons[neuron_id].should_fire()]
             
+            logger.info(f"Parallel execution: {len(neurons_to_fire)} neurons ready to fire in parallel")
+            
             if neurons_to_fire:
                 with concurrent.futures.ThreadPoolExecutor(max_workers=len(neurons_to_fire)) as executor:
                     # Submit all neuron firings in parallel
