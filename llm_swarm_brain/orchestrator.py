@@ -233,20 +233,55 @@ class NeuralOrchestrator:
                 self.total_activations += 1
 
         # Fire neurons that exceed threshold
-        for neuron_id, signal in signals.items():
-            neuron = self.neurons[neuron_id]
+        # Check if parallel execution is enabled
+        if getattr(self.config, 'parallel_execution', False):
+            # Parallel execution using threading for API calls
+            import concurrent.futures
+            
+            neurons_to_fire = [(neuron_id, signal) for neuron_id, signal in signals.items() 
+                             if self.neurons[neuron_id].should_fire()]
+            
+            if neurons_to_fire:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=len(neurons_to_fire)) as executor:
+                    # Submit all neuron firings in parallel
+                    future_to_neuron = {
+                        executor.submit(self.neurons[neuron_id].fire, signal, global_context): neuron_id
+                        for neuron_id, signal in neurons_to_fire
+                    }
+                    
+                    # Collect results as they complete
+                    for future in concurrent.futures.as_completed(future_to_neuron):
+                        neuron_id = future_to_neuron[future]
+                        try:
+                            output = future.result()
+                            step_result["outputs"][neuron_id] = output
+                            step_result["fired_neurons"].append(neuron_id)
+                            
+                            # Propagate to connected neurons
+                            neuron = self.neurons[neuron_id]
+                            propagation_count = neuron.propagate(
+                                output,
+                                learning_rate=self.config.hebbian_learning_rate
+                            )
+                            step_result["propagations"] += propagation_count
+                        except Exception as e:
+                            logger.error(f"Error firing neuron {neuron_id} in parallel: {e}")
+        else:
+            # Sequential execution (original behavior)
+            for neuron_id, signal in signals.items():
+                neuron = self.neurons[neuron_id]
 
-            if neuron.should_fire():
-                output = neuron.fire(signal, global_context)
-                step_result["outputs"][neuron_id] = output
-                step_result["fired_neurons"].append(neuron_id)
+                if neuron.should_fire():
+                    output = neuron.fire(signal, global_context)
+                    step_result["outputs"][neuron_id] = output
+                    step_result["fired_neurons"].append(neuron_id)
 
-                # Propagate to connected neurons
-                propagation_count = neuron.propagate(
-                    output,
-                    learning_rate=self.config.hebbian_learning_rate
-                )
-                step_result["propagations"] += propagation_count
+                    # Propagate to connected neurons
+                    propagation_count = neuron.propagate(
+                        output,
+                        learning_rate=self.config.hebbian_learning_rate
+                    )
+                    step_result["propagations"] += propagation_count
                 self.total_propagations += propagation_count
 
         # Track firing pattern
