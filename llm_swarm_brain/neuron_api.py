@@ -263,7 +263,7 @@ class APINeuron:
                 self.api_url,
                 headers=headers,
                 json=data,
-                timeout=60  # 60 second timeout
+                timeout=600  # 10 minute timeout for local Phi-4
             )
             
             response.raise_for_status()
