@@ -302,10 +302,21 @@ class NeuralOrchestrator:
             neuron.activation_level for neuron in self.neurons.values()
         ]
 
+        # Handle empty activations
+        if len(activations) == 0:
+            return {
+                "mean_activation": 0.0,
+                "max_activation": 0.0,
+                "active_neuron_ratio": 0.0,
+                "total_propagations": self.total_propagations,
+                "total_activations": self.total_activations,
+                "network_connectivity": 0.0
+            }
+
         metrics = {
-            "mean_activation": np.mean(activations),
-            "max_activation": np.max(activations),
-            "active_neuron_ratio": len(self.active_neurons) / len(self.neurons),
+            "mean_activation": np.mean(activations) if activations else 0.0,
+            "max_activation": np.max(activations) if activations else 0.0,
+            "active_neuron_ratio": len(self.active_neurons) / len(self.neurons) if self.neurons else 0.0,
             "total_propagations": self.total_propagations,
             "total_activations": self.total_activations,
             "network_connectivity": np.mean(self.connection_matrix) if self.connection_matrix is not None else 0.0
