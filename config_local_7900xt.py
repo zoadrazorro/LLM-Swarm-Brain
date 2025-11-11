@@ -89,21 +89,22 @@ class LocalBrainConfig:
 
 
 # 3-neuron architecture for single LM Studio instance (Phi-4 14B model)
-# All neurons use the same LM Studio server
+# All neurons use the same LM Studio server (GPU 0)
 # Each neuron handles multiple cognitive functions
 NEURON_ARCHITECTURE = {
-    # Neuron 0: Perception, Attention, Memory
-    "neuron_0": {
-        "role": [NeuronRole.PERCEPTION, NeuronRole.ATTENTION, NeuronRole.MEMORY]
-    },
-    # Neuron 1: Reasoning, Creative, Analytical
-    "neuron_1": {
-        "role": [NeuronRole.REASONING, NeuronRole.CREATIVE, NeuronRole.ANALYTICAL]
-    },
-    # Neuron 2: Synthesis, Meta-Cognitive
-    "neuron_2": {
-        "role": [NeuronRole.SYNTHESIS, NeuronRole.META_COGNITIVE]
-    },
+    "gpu_0": {
+        # Neuron 0: Perception, Attention, Memory
+        "perception": [NeuronRole.PERCEPTION],
+        "attention": [NeuronRole.ATTENTION],
+        "memory": [NeuronRole.MEMORY],
+        # Neuron 1: Reasoning, Creative, Analytical
+        "reasoning": [NeuronRole.REASONING],
+        "creative": [NeuronRole.CREATIVE],
+        "analytical": [NeuronRole.ANALYTICAL],
+        # Neuron 2: Synthesis, Meta-Cognitive
+        "synthesis": [NeuronRole.SYNTHESIS],
+        "meta_cognitive": [NeuronRole.META_COGNITIVE],
+    }
 }
 
 
