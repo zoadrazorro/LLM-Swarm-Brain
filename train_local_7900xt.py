@@ -77,8 +77,8 @@ class LocalTrainer:
         self.brain._role_prompts = ROLE_PROMPTS
         
         # Re-initialize neurons with local architecture
-        self.brain._initialize_neurons()
-        self.brain._initialize_connections()
+        self.brain.orchestrator.neurons.clear()  # Clear existing neurons
+        self.brain._initialize_neurons()  # Create 3 new neurons
         
         # Override API URL and assign different model instances for parallel execution
         # LM Studio has loaded 3 Phi-4 instances that can run in parallel
