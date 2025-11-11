@@ -54,8 +54,8 @@ class LocalTrainer:
         self.share_rag_with_cloud = share_rag_with_cloud
         
         # Initialize brain for local LM Studio with Phi-4
-        logger.info("Initializing 3-neuron Phi-4 brain for local training...")
-        logger.info("Single LM Studio instance: 3 neurons")
+        logger.info("Initializing 8-neuron Phi-4 brain for local training...")
+        logger.info("3 Phi-4 instances: 8 neurons distributed across them")
         logger.info("Using LM Studio at http://localhost:1234")
         logger.info("Model: Phi-4 (14B parameters, enhanced reasoning)")
         if share_rag_with_cloud:
@@ -82,14 +82,16 @@ class LocalTrainer:
         
         # Override API URL and assign different model instances for parallel execution
         # LM Studio has loaded 3 Phi-4 instances that can run in parallel
-        # Assign each neuron to a different instance
+        # Distribute 8 neurons across 3 Phi-4 instances
         model_instances = ["microsoft/phi-4", "microsoft/phi-4:2", "microsoft/phi-4:3"]
         
         neuron_list = list(self.brain.orchestrator.neurons.values())
+        logger.info(f"Configuring {len(neuron_list)} neurons across {len(model_instances)} Phi-4 instances")
+        
         for idx, neuron in enumerate(neuron_list):
             if hasattr(neuron, 'api_url'):
                 neuron.api_url = "http://localhost:1234/v1/chat/completions"
-                # Assign different model instance to each neuron for parallel execution
+                # Round-robin assignment across 3 Phi-4 instances
                 neuron.model_name = model_instances[idx % len(model_instances)]
                 logger.info(f"Assigned {neuron.neuron_id} to {neuron.model_name}")
         
