@@ -27,7 +27,7 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 from llm_swarm_brain.brain import PhiBrain
-from config_local_7900xt import LocalBrainConfig
+from config_local_7900xt import LocalBrainConfig, NEURON_ARCHITECTURE, DEFAULT_CONNECTIONS, ROLE_PROMPTS
 
 # Setup logging
 logging.basicConfig(
@@ -70,6 +70,15 @@ class LocalTrainer:
             use_64_neurons=False,
             api_provider="hyperbolic"  # Uses OpenAI-compatible API
         )
+        
+        # Override with local 3-neuron architecture
+        self.brain._neuron_architecture = NEURON_ARCHITECTURE
+        self.brain._default_connections = DEFAULT_CONNECTIONS
+        self.brain._role_prompts = ROLE_PROMPTS
+        
+        # Re-initialize neurons with local architecture
+        self.brain._initialize_neurons()
+        self.brain._initialize_connections()
         
         # Override API URL and assign different model instances for parallel execution
         # LM Studio has loaded 3 Phi-4 instances that can run in parallel
