@@ -60,7 +60,7 @@ class LocalBrainConfig:
     total_vram_budget: float = 20.0  # GB (single GPU)
     
     # Neural network parameters
-    activation_threshold: float = 0.5
+    activation_threshold: float = 0.0  # Force all neurons to fire (always active)
     connection_strength_threshold: float = 0.4
     
     # GWT parameters (optimized for local)
